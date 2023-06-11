@@ -32,6 +32,7 @@ const Azure = new PublicClientApplication({
     clientId: config.CLIENT_ID,
     redirectUri: config.REDIRECT_URI,
     authority: config.AUTHORITY,
+    navigateToLoginRequestUrl: false,
   },
   cache: {
     cacheLocation: "localStorage",
@@ -52,8 +53,6 @@ const login = async () => {
         .replace("@m.materdei.ac.th", ""),
       name: res.account.name.replace(/[0-9]/g, ""),
     };
-
-    alert(res.account.name);
 
     state.value.isAuthenticated = true;
     router.push("/");
