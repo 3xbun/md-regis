@@ -44,7 +44,6 @@ const login = () => {
     scopes: config.SCOPES,
   })
     .then((res) => {
-      alert(res.account.username);
       const profile = {
         username: res.account.username
           .toLowerCase()
