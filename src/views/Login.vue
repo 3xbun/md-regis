@@ -40,25 +40,23 @@ const Azure = new PublicClientApplication({
   },
 });
 
-const login = async () => {
-  try {
-    const res = await Azure.loginPopup({
-      scopes: config.SCOPES,
-      prompt: "select_account",
-    });
+const login = () => {
+  Azure.loginPopup({
+    scopes: config.SCOPES,
+    prompt: "select_account",
+  })
+    .then((res) => {
+      profile.value = {
+        username: res.account.username
+          .toLowerCase()
+          .replace("@m.materdei.ac.th", ""),
+        name: res.account.name.replace(/[0-9]/g, ""),
+      };
 
-    profile.value = {
-      username: res.account.username
-        .toLowerCase()
-        .replace("@m.materdei.ac.th", ""),
-      name: res.account.name.replace(/[0-9]/g, ""),
-    };
-
-    state.value.isAuthenticated = true;
-    router.push("/");
-  } catch (error) {
-    console.log(error);
-  }
+      state.value.isAuthenticated = true;
+      router.push("/");
+    })
+    .catch((err) => console.log(err));
 };
 </script>
 
