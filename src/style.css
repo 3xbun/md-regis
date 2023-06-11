@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;700&display=swap');
+
+:root {
+    --white: #F8F8FF;
+    --light: #81BBDB;
+    --primary: #3E64D6;
+    --dark: #2B3457;
+    --accent: #EEE8A9;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    font-family: 'Prompt', sans-serif;
+    background-color: var(--dark);
+    color: var(--white);
+}
+
+.drop-shadow {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+.btn {
+    cursor: pointer;
+}

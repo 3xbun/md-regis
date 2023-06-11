@@ -2,6 +2,16 @@
   <router-view />
 </template>
 
-<script setup></script>
+<script setup>
+import { provide, ref } from "vue";
+
+const profile = ref({});
+const state = ref({
+  isAuthenticated: false,
+});
+
+provide("profile", profile);
+provide("state", state);
+</script>
 
 <style scoped></style>
