@@ -46,17 +46,16 @@ const login = () => {
     prompt: "select_account",
   })
     .then((res) => {
-      profile.value = {
+      const profile = {
         username: res.account.username
           .toLowerCase()
           .replace("@m.materdei.ac.th", ""),
         name: res.account.name.replace(/[0-9]/g, ""),
       };
 
-      localStorage.setItem("profile", JSON.stringify(profile.value));
+      localStorage.setItem("profile", JSON.stringify(profile));
       localStorage.setItem("isAuthenticated", true);
       state.value.isAuthenticated = true;
-      router.push("/");
     })
     .catch((err) => console.log(err));
 };
