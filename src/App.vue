@@ -1,4 +1,6 @@
-<template>App.Vue</template>
+<template>
+  <router-view />
+</template>
 
 <script setup></script>
 
