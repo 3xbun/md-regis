@@ -32,7 +32,6 @@ const Azure = new PublicClientApplication({
     clientId: config.CLIENT_ID,
     redirectUri: config.REDIRECT_URI,
     authority: config.AUTHORITY,
-    navigateToLoginRequestUrl: false,
   },
   cache: {
     cacheLocation: "localStorage",
@@ -43,9 +42,9 @@ const Azure = new PublicClientApplication({
 const login = () => {
   Azure.loginPopup({
     scopes: config.SCOPES,
-    prompt: "select_account",
   })
     .then((res) => {
+      alert(res.account.username);
       const profile = {
         username: res.account.username
           .toLowerCase()
@@ -56,6 +55,7 @@ const login = () => {
       localStorage.setItem("profile", JSON.stringify(profile));
       localStorage.setItem("isAuthenticated", true);
       state.value.isAuthenticated = true;
+      router.push("/");
     })
     .catch((err) => console.log(err));
 };
