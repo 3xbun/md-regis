@@ -75,9 +75,9 @@ const logout = () => {
 };
 
 onMounted(() => {
-  // if (!state.value.isAuthenticated) {
-  //   router.push("/login");
-  // }
+  if (!state.value.isAuthenticated) {
+    router.push("/login");
+  }
 
   const percent = new CountUp('percent', 80, {duration: 3})
   const exp = new CountUp('exp', 3.5, {duration: 4,decimalPlaces: 2} )
