@@ -1,6 +1,6 @@
 const config = {
     CLIENT_ID: "804e23b5-3e40-4201-bae0-c4f89b2829b4",
-    REDIRECT_URI: "http://localhost:3000",
+    REDIRECT_URI: "https://md-regis.netlify.app",
     SCOPES: [
         'user.read'
     ],
