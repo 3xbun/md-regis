@@ -14,9 +14,14 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "^3.0.0-5",
     "axios": "^1.4.0",
+    "chart.js": "^4.3.0",
     "circle-chart": "^1.0.0",
+    "countup.js": "^2.6.2",
+    "easy-circular-progress": "^1.0.4",
     "vue": "^3.2.47",
-    "vue-router": "^4.2.2"
+    "vue-countup-v2": "^4.0.0",
+    "vue-router": "^4.2.2",
+    "vue3-circle-progress": "^1.0.7"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

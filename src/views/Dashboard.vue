@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="dashboard">
     <header class="drop-shadow">
       <h1>Dashboard</h1>
     </header>
@@ -13,18 +13,35 @@
 
       <div class="summary">
         <div class="ovr">
-          <div class="circle"></div>
+          <CircleProgress :viewport="true" :percent="80" :transition="1500" :fill-color="'#3E64D6'" :empty-color="'#81BBDB'"/>
+          <p><span id="percent">80</span><span class="total">/100</span></p>
         </div>
         <div class="rightSummary">
           <div class="exp">
             <p>Expected Grade</p>
-            <strong>4.00</strong>
+            <strong id="exp"></strong>
           </div>
           <div class="atd">
             <p>Attendance</p>
-            <p><strong>8</strong>/10</p>
+            <p><strong id="atd"></strong>/10</p>
           </div>
         </div>
+      </div>
+
+      <div class="works">
+        <h1>Works</h1>
+        <ul>
+          <li class="work">
+            <div class="top">
+              <p>Work Title #1</p>
+              <p class="score"><span id="score">80</span>/100</p>
+            </div>
+            <div class="notion">
+              <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/1024px-Notion-logo.svg.png"> -->
+              <p>View In Notion</p>
+            </div>
+          </li>
+        </ul>
       </div>
 
       <p @click="logout()" class="logout btn">Logout</p>
@@ -34,9 +51,12 @@
 </template>
 
 <script setup>
-import Footer from "../components/Footer.vue";
+import CircleProgress from "vue3-circle-progress";
+import "vue3-circle-progress/dist/circle-progress.css";
 
-import CircleChart from "circle-chart";
+import { CountUp } from 'countup.js';
+
+import Footer from "../components/Footer.vue";
 
 import { computed, inject, onMounted, ref } from "vue";
 import router from "../router";
@@ -59,21 +79,19 @@ onMounted(() => {
   //   router.push("/login");
   // }
 
-  new CircleChart({
-    $container: document.querySelector(".circle"),
-    ringProportion: 0.4,
-    staticTotal: true,
-    total: 100,
-    middleCircleColor: "#F8F8FF",
-    background: "#81BBDB",
-    definition: [
-      { label: "Score", name: "score", color: "#3E64D6", value: 90 },
-    ],
-  });
+  const percent = new CountUp('percent', 80, {duration: 3})
+  const exp = new CountUp('exp', 3.5, {duration: 4,decimalPlaces: 2} )
+  const atd = new CountUp('atd', 5, {duration: 5})
+  percent.start()
+  exp.start()
+  atd.start()
 });
 </script>
 
 <style scoped>
+#dashboard {
+  padding-bottom: 10em;
+}
 header {
   background: var(--primary);
   padding: 1em;
@@ -124,8 +142,24 @@ img {
   padding: 0.5em;
   border-radius: 0.5em;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.ovr p {
+  position: absolute;
+}
+
+#percent {
+  font-size: 3em;
+}
+
+.total {
+  font-weight: normal;
+  color: var(--dark);
+  font-size: 1rem;
 }
 
 .ovr,
@@ -160,5 +194,30 @@ img {
   text-align: center;
   font-weight: bold;
   color: var(--white);
+}
+
+.works {
+  margin: 1em 0;
+}
+
+.work {
+  background-color: var(--white);
+  color: var(--dark);
+  padding: 0.5em;
+  border-radius: 0.5em;
+}
+
+.work .top {
+  display: flex;
+  justify-content: space-between;
+}
+
+#score {
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.notion {
+  text-align: right;
 }
 </style>
