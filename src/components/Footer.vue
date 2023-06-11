@@ -1,5 +1,5 @@
 <template>
-  <footer>
+  <footer class="drop-shadow">
     <p>
       Made with
       <font-awesome-icon :icon="['fas', 'heart']" class="heart" /> for Mater Dei
@@ -19,8 +19,9 @@ footer {
   bottom: 0;
   left: 0;
   right: 0;
+  background-color: var(--dark);
   color: var(--light);
-  padding-bottom: 1em;
+  padding: 1em 0;
   text-align: center;
 }
 
