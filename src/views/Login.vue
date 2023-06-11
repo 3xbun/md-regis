@@ -53,6 +53,8 @@ const login = async () => {
       name: res.account.name.replace(/[0-9]/g, ""),
     };
 
+    alert(res.account.name);
+
     state.value.isAuthenticated = true;
     router.push("/");
   } catch (error) {
