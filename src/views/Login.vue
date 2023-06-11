@@ -53,6 +53,8 @@ const login = () => {
         name: res.account.name.replace(/[0-9]/g, ""),
       };
 
+      localStorage.setItem("profile", JSON.stringify(profile.value));
+      localStorage.setItem("isAuthenticated", true);
       state.value.isAuthenticated = true;
       router.push("/");
     })

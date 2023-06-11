@@ -7,7 +7,7 @@ import { provide, ref } from "vue";
 
 const profile = ref({});
 const state = ref({
-  isAuthenticated: false,
+  isAuthenticated: localStorage.isAuthenticated || false,
 });
 
 provide("profile", profile);

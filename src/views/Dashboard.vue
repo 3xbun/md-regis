@@ -13,7 +13,13 @@
 
       <div class="summary">
         <div class="ovr">
-          <CircleProgress :viewport="true" :percent="80" :transition="1500" :fill-color="'#3E64D6'" :empty-color="'#81BBDB'"/>
+          <CircleProgress
+            :viewport="true"
+            :percent="80"
+            :transition="1500"
+            :fill-color="'#3E64D6'"
+            :empty-color="'#81BBDB'"
+          />
           <p><span id="percent">80</span><span class="total">/100</span></p>
         </div>
         <div class="rightSummary">
@@ -54,7 +60,7 @@
 import CircleProgress from "vue3-circle-progress";
 import "vue3-circle-progress/dist/circle-progress.css";
 
-import { CountUp } from 'countup.js';
+import { CountUp } from "countup.js";
 
 import Footer from "../components/Footer.vue";
 
@@ -69,6 +75,8 @@ const profileSrc = computed(
 );
 
 const logout = () => {
+  localStorage.clear();
+  sessionStorage.clear();
   state.value.isAuthenticated = false;
   profile.value = {};
   router.push("login");
@@ -79,12 +87,12 @@ onMounted(() => {
     router.push("/login");
   }
 
-  const percent = new CountUp('percent', 80, {duration: 3})
-  const exp = new CountUp('exp', 3.5, {duration: 4,decimalPlaces: 2} )
-  const atd = new CountUp('atd', 5, {duration: 5})
-  percent.start()
-  exp.start()
-  atd.start()
+  const percent = new CountUp("percent", 80, { duration: 3 });
+  const exp = new CountUp("exp", 3.5, { duration: 4, decimalPlaces: 2 });
+  const atd = new CountUp("atd", 5, { duration: 5 });
+  percent.start();
+  exp.start();
+  atd.start();
 });
 </script>
 
