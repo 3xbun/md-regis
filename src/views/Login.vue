@@ -59,7 +59,11 @@ const login = () => {
       state.value.isAuthenticated = true;
       router.push("/");
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err)
+      localStorage.clear()
+      sessionStorage.clear()
+    });
 };
 </script>
 
