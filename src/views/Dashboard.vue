@@ -13,13 +13,8 @@
 
       <div class="summary">
         <div class="ovr">
-          <CircleProgress
-            :viewport="true"
-            :percent="80"
-            :transition="1500"
-            :fill-color="'#3E64D6'"
-            :empty-color="'#81BBDB'"
-          />
+          <CircleProgress :viewport="true" :percent="80" :transition="1500" :fill-color="'#3E64D6'"
+            :empty-color="'#81BBDB'" />
           <p><span id="percent">80</span><span class="total">/100</span></p>
         </div>
         <div class="rightSummary">
@@ -59,6 +54,8 @@
 <script setup>
 import CircleProgress from "vue3-circle-progress";
 import "vue3-circle-progress/dist/circle-progress.css";
+import { PublicClientApplication } from "@azure/msal-browser";
+import config from "../config";
 
 import { CountUp } from "countup.js";
 
@@ -66,6 +63,17 @@ import Footer from "../components/Footer.vue";
 
 import { computed, inject, onMounted, ref } from "vue";
 import router from "../router";
+
+const Azure = new PublicClientApplication({
+  auth: {
+    clientId: config.CLIENT_ID,
+    authority: config.AUTHORITY,
+  },
+  cache: {
+    cacheLocation: "localStorage",
+    storeAuthStateInCookie: true,
+  },
+});
 
 const profile = inject("profile");
 const state = inject("state");
@@ -79,7 +87,8 @@ const logout = () => {
   sessionStorage.clear();
   state.value.isAuthenticated = false;
   profile.value = {};
-  router.push("login");
+  Azure.logoutRedirect();
+  // router.push("login");
 };
 
 onMounted(() => {
@@ -100,6 +109,7 @@ onMounted(() => {
 #dashboard {
   padding-bottom: 10em;
 }
+
 header {
   background: var(--primary);
   padding: 1em;

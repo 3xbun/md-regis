@@ -6,9 +6,7 @@
       <div class="signInBtn btn drop-shadow" @click="login()">
         <img
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png?20210729021049"
-          alt=""
-          class="logo"
-        />
+          alt="" class="logo" />
         <strong>Sign In With Office365</strong>
       </div>
     </div>
@@ -21,7 +19,7 @@ import Footer from "../components/Footer.vue";
 
 import config from "../config";
 import { PublicClientApplication } from "@azure/msal-browser";
-import { inject } from "vue";
+import { inject, onBeforeMount, onMounted, onUpdated, ref } from "vue";
 import router from "../router";
 
 const profile = inject("profile");
@@ -30,7 +28,6 @@ const state = inject("state");
 const Azure = new PublicClientApplication({
   auth: {
     clientId: config.CLIENT_ID,
-    redirectUri: config.REDIRECT_URI,
     authority: config.AUTHORITY,
   },
   cache: {
@@ -39,39 +36,36 @@ const Azure = new PublicClientApplication({
   },
 });
 
-const login = () => {
-  localStorage.clear()
-  sessionStorage.clear()
-  
-  Azure.loginPopup({
-    scopes: config.SCOPES,
-  })
-    .then((res) => {
-      const profile = {
-        username: res.account.username
-          .toLowerCase()
-          .replace("@m.materdei.ac.th", ""),
-        name: res.account.name.replace(/[0-9]/g, ""),
-      };
+const handleResponse = (res) => {
+  if (res !== null) {
+    const profile = {
+      username: res.account.username
+        .toLowerCase()
+        .replace("@m.materdei.ac.th", ""),
+      name: res.account.name.replace(/[0-9]/g, ""),
+    };
 
-      localStorage.setItem("profile", JSON.stringify(profile));
-      localStorage.setItem("isAuthenticated", true);
-      state.value.isAuthenticated = true;
-      router.push("/");
-    })
-    .catch((err) => {
-      console.log(err)
-      localStorage.clear()
-      sessionStorage.clear()
-    });
+    localStorage.setItem("profile", JSON.stringify(profile));
+    localStorage.setItem("isAuthenticated", true);
+
+    state.value.isAuthenticated = true;
+    profile.value = profile;
+    router.push("/");
+  }
+}
+
+Azure.handleRedirectPromise().then(handleResponse);
+
+const login = () => {
+  Azure.loginRedirect(config.SCOPES)
 };
+
 </script>
 
 <style scoped>
 .image {
   height: 30vh;
-  background: url("https://source.unsplash.com/1600x900/?education,quote")
-    no-repeat;
+  background: url("https://source.unsplash.com/1600x900/?education,quote") no-repeat;
   background-size: cover;
 }
 
