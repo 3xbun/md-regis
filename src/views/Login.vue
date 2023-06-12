@@ -40,6 +40,9 @@ const Azure = new PublicClientApplication({
 });
 
 const login = () => {
+  localStorage.clear()
+  sessionStorage.clear()
+  
   Azure.loginPopup({
     scopes: config.SCOPES,
   })
