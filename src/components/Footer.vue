@@ -9,9 +9,13 @@
       Copyright &copy;2023
       <a href="https://3xbun.github.io/" target="_black">Bunnasorn Kaewsiri</a>
     </p>
-    <p class="version">1.0.0 - Pre Release</p>
+    <p class="version">{{ APP_VERSION }}</p>
   </footer>
 </template>
+
+<script setup>
+const APP_VERSION = __APP_VERSION__
+</script>
 
 <style scoped>
 footer {
