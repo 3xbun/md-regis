@@ -10,8 +10,8 @@
                     </p>
                 </div>
                 <div class="notion">
-                    <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/1024px-Notion-logo.svg.png"> -->
                     <a :href="work.notion" target="_blank">View In Notion</a>
+                    <img src="https://logos-download.com/wp-content/uploads/2019/06/Notion_App_Logo.png">
                 </div>
             </li>
         </ul>
@@ -54,10 +54,24 @@ const myScore = computed(() => ScoresDB.filter((score) => score.username === pro
 
 .notion {
     text-align: right;
+    height: 2vh;
+    display: flex;
+    gap: .5em;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 #score {
     font-weight: bold;
     color: var(--primary);
+}
+
+img {
+    height: 100%;
+    filter: invert(89%) sepia(8%) saturate(5241%) hue-rotate(172deg) brightness(90%) contrast(90%);
+}
+
+a {
+    color: var(--light);
 }
 </style>
