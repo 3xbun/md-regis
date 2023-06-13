@@ -12,7 +12,7 @@
       </div>
       <div class="atd">
         <p>Attendance</p>
-        <p><strong id="atd"></strong>/10</p>
+        <p><strong id="atd"></strong>/{{ ScoresDB[0].atd }}</p>
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@ import ScoresDB from '../database/Scores';
 const profile = inject("profile");
 
 const myScore = computed(() => ScoresDB.filter((score) => score.username === profile.value.username)[0])
-const totalScore = computed(() => myScore.value.works.reduce((acc, a) => acc + a.score, 0))
+const totalScore = computed(() => parseInt(myScore.value[1]) + parseInt(myScore.value[2]) + parseInt(myScore.value[3]))
 
 
 const grade = computed(() => {

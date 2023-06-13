@@ -6,7 +6,7 @@
                 <div class="top">
                     <p>{{ work.title }}</p>
                     <p>
-                        <span id="score">{{ getScore(work.workID) }}</span>/{{ work.score }}
+                        <span id="score">{{ myScore[work.workID] }}</span>/{{ work.score }}
                     </p>
                 </div>
                 <div class="notion">
@@ -27,13 +27,6 @@ import ScoresDB from '../database/Scores';
 const profile = inject("profile");
 
 const myScore = computed(() => ScoresDB.filter((score) => score.username === profile.value.username)[0])
-const getScore = (workID) => {
-    try {
-        return myScore.value.works.filter(work => work.workID === workID)[0].score
-    } catch (error) {
-        return 0
-    }
-}
 </script>
 
 <style scoped>
