@@ -86,16 +86,16 @@ const Azure = new PublicClientApplication({
 const profile = inject("profile");
 const state = inject("state");
 
-const myScore = computed(() => Scores.filter((Score) => Score.username === profile.value.username)[0].works)
+const myScore = computed(() => Scores.filter((Score) => Score.username === profile.value.username)[0])
 const getScore = (workID) => {
   try {
-    return myScore.value.filter(work => work.workID === workID)[0].score
+    return myScore.value.works.filter(work => work.workID === workID)[0].score
   } catch (error) {
     return 0
   }
 }
 
-const totalScore = computed(() => myScore.value.reduce((acc, a) => acc + a.score, 0))
+const totalScore = computed(() => myScore.value.works.reduce((acc, a) => acc + a.score, 0))
 const grade = computed(() => {
   const score = totalScore.value
   let g = '0'
@@ -139,7 +139,7 @@ onMounted(() => {
 
   const percent = new CountUp("percent", totalScore.value, { duration: 3 });
   const exp = new CountUp("exp", parseFloat(grade.value), { duration: 4, decimalPlaces: 2 });
-  const atd = new CountUp("atd", 5, { duration: 5 });
+  const atd = new CountUp("atd", myScore.value.atd, { duration: 5 });
   percent.start();
   exp.start();
   atd.start();
