@@ -15,7 +15,7 @@ provide("state", state);
 
 onMounted(() => {
   if (localStorage.getItem("profile")) {
-    profile.value = localStorage.getItem("profile")
+    profile.value = JSON.parse(localStorage.getItem("profile"))
   }
 })
 </script>
