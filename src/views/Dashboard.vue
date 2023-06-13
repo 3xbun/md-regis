@@ -35,14 +35,16 @@
       <div class="works">
         <h1>Works</h1>
         <ul>
-          <li class="work">
+          <li class="work" v-for="work in Works" :key="work.workID">
             <div class="top">
-              <p>Work Title #1</p>
-              <p class="score"><span id="score">80</span>/100</p>
+              <p>{{ work.title }}</p>
+              <p>
+                <span id="score">{{ getScore(work.workID) }}</span>/{{ work.score }}
+              </p>
             </div>
             <div class="notion">
               <!-- <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Notion-logo.svg/1024px-Notion-logo.svg.png"> -->
-              <p>View In Notion</p>
+              <a :href="work.notion" target="_blank">View In Notion</a>
             </div>
           </li>
         </ul>
@@ -59,6 +61,9 @@ import CircleProgress from "vue3-circle-progress";
 import "vue3-circle-progress/dist/circle-progress.css";
 import { PublicClientApplication } from "@azure/msal-browser";
 import config from "../config";
+
+import Works from '../database/Works';
+import Scores from '../database/Scores';
 
 import { CountUp } from "countup.js";
 
@@ -80,6 +85,15 @@ const Azure = new PublicClientApplication({
 
 const profile = inject("profile");
 const state = inject("state");
+
+const myScore = computed(() => Scores.filter((Score) => Score.username === profile.value.username)[0].works)
+const getScore = (workID) => {
+  try {
+    return myScore.value.filter(work => work.workID === workID)[0].score
+  } catch (error) {
+    return 0
+  }
+}
 
 const profileSrc = computed(
   () => "https://api.dicebear.com/6.x/thumbs/svg?seed=" + "Bunnasorn Kaewsiri"
@@ -219,6 +233,12 @@ img {
 
 .works {
   margin: 1em 0;
+}
+
+.works ul {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .work {
