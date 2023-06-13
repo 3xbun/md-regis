@@ -38,18 +38,20 @@ const Azure = new PublicClientApplication({
 
 const handleResponse = (res) => {
   if (res !== null) {
-    const profile = {
+    const account = {
       username: res.account.username
         .toLowerCase()
         .replace("@m.materdei.ac.th", ""),
       name: res.account.name.replace(/[0-9]/g, ""),
     };
 
-    localStorage.setItem("profile", JSON.stringify(profile));
-    localStorage.setItem("isAuthenticated", true);
 
     state.value.isAuthenticated = true;
-    profile.value = profile;
+    profile.value = account
+
+    localStorage.setItem("profile", JSON.stringify(account));
+    localStorage.setItem("isAuthenticated", true);
+
     router.push("/");
   }
 }
