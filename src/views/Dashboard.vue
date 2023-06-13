@@ -16,13 +16,13 @@
 
       <div class="summary">
         <div class="ovr">
-          <CircleProgress :viewport="true" :percent="80" :transition="1500" :fill-color="'#3E64D6'"
+          <CircleProgress :viewport="true" :percent="5" :transition="1500" :fill-color="'#3E64D6'"
             :empty-color="'#81BBDB'" />
-          <p><span id="percent">80</span><span class="total">/100</span></p>
+          <p><span id="percent"></span><span class="total">/100</span></p>
         </div>
         <div class="rightSummary">
           <div class="exp">
-            <p>Expected Grade</p>
+            <p>Projected Grade</p>
             <strong id="exp"></strong>
           </div>
           <div class="atd">
@@ -95,6 +95,30 @@ const getScore = (workID) => {
   }
 }
 
+const totalScore = computed(() => myScore.value.reduce((acc, a) => acc + a.score, 0))
+const grade = computed(() => {
+  const score = totalScore.value
+  let g = '0'
+
+  if (score >= 80) {
+    g = '4'
+  } else if (score >= 75) {
+    g = '3.5'
+  } else if (score >= 70) {
+    g = '3'
+  } else if (score >= 65) {
+    g = '2.5'
+  } else if (score >= 60) {
+    g = '2'
+  } else if (score >= 55) {
+    g = '1.5'
+  } else if (score >= 50) {
+    g = '1'
+  }
+
+  return g
+})
+
 const profileSrc = computed(
   () => "https://api.dicebear.com/6.x/thumbs/svg?seed=" + "Bunnasorn Kaewsiri"
 );
@@ -113,8 +137,8 @@ onMounted(() => {
     router.push("/login");
   }
 
-  const percent = new CountUp("percent", 80, { duration: 3 });
-  const exp = new CountUp("exp", 3.5, { duration: 4, decimalPlaces: 2 });
+  const percent = new CountUp("percent", totalScore.value, { duration: 3 });
+  const exp = new CountUp("exp", parseFloat(grade.value), { duration: 4, decimalPlaces: 2 });
   const atd = new CountUp("atd", 5, { duration: 5 });
   percent.start();
   exp.start();
