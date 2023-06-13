@@ -16,12 +16,14 @@ const profileSrc = computed(
 
 <style scoped>
 .profileImage {
-    width: 20vw;
+    width: 100%;
+    height: 15vh;
     margin: 1em auto 0;
+    text-align: center;
 }
 
 img {
-    width: 100%;
+    height: 100%;
     border-radius: 1em;
 }
 </style>
