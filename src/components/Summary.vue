@@ -1,7 +1,8 @@
 <template>
   <div class="summary">
     <div class="ovr">
-      <CircleProgress :viewport="true" :percent="5" :transition="1500" :fill-color="'#3E64D6'" :empty-color="'#81BBDB'" />
+      <CircleProgress :viewport="true" :percent="totalScore" :transition="1500" :fill-color="'#3E64D6'"
+        :empty-color="'#81BBDB'" />
       <p><span id="percent"></span><span class="total">/100</span></p>
     </div>
     <div class="rightSummary">
