@@ -120,7 +120,7 @@ const grade = computed(() => {
 })
 
 const profileSrc = computed(
-  () => "https://api.dicebear.com/6.x/thumbs/svg?seed=" + "Bunnasorn Kaewsiri"
+  () => "https://api.dicebear.com/6.x/thumbs/svg?seed=" + profile.value.username
 );
 
 const logout = () => {
