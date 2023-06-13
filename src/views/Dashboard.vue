@@ -9,7 +9,10 @@
     </div>
 
     <div class="container">
-      <p class="name">BUNNASORN KAEWSIRI</p>
+      <div class="name">
+        <p>{{ profile.name }}</p>
+        <p class="username">@{{ profile.username }}</p>
+      </div>
 
       <div class="summary">
         <div class="ovr">
@@ -237,5 +240,11 @@ img {
 
 .notion {
   text-align: right;
+}
+
+.username {
+  font-size: .8em;
+  font-weight: lighter;
+  color: var(--light);
 }
 </style>
