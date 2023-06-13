@@ -10,7 +10,8 @@ const Scores = [
                 workID: "3",
                 score: 18,
             }
-        ]
+        ],
+        atd: 3
     },
     {
         username: "dummy.j",
