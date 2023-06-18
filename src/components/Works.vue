@@ -6,7 +6,7 @@
                 <div class="top">
                     <p>{{ work.title }}</p>
                     <p>
-                        <span id="score">{{ myScore[work.workID] }}</span>/{{ work.score }}
+                        <span id="score">{{ myScore['work' + work.workID] }}</span>/{{ work.score }}
                     </p>
                 </div>
                 <div class="notion">
