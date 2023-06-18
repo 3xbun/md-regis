@@ -73,9 +73,6 @@ import { ref } from '@vue/reactivity';
 import { onMounted } from 'vue';
 import { computed } from '@vue/reactivity';
 
-
-import * as fs from 'fs';
-
 // Configure lowdb to write data to JSON file
 const adapter = new LocalStorage('score')
 // const defaultData = { posts: [] }
