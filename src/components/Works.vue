@@ -25,20 +25,27 @@ import { inject, onMounted, ref } from 'vue';
 
 import Scores from '../database/Scores.json';
 import Works from '../database/Works.json';
-import Students from '../database/Students.json';
 
 const profile = inject("profile");
 
 const workDetail = (id) => {
-    return {
-        title: Works.data.filter(w => w.workID == id)[0].title,
-        totalScore: Works.data.filter(w => w.workID == id)[0].score,
-        notion: Works.data.filter(w => w.workID == id)[0].notion
+    try {
+        return {
+            title: Works.data.filter(w => w.workID == id)[0].title,
+            totalScore: Works.data.filter(w => w.workID == id)[0].score,
+            notion: Works.data.filter(w => w.workID == id)[0].notion
+        }
+    } catch (error) {
+        console.log(error);
     }
 }
 
 const getScore = (id) => {
     return myScore.value.filter(w => w.workID == id)[0].score
+}
+
+const lastUpdate = () => {
+    myScore.value = Scores.Scores
 }
 
 const myScore = ref({})
