@@ -17,11 +17,15 @@
                 </div>
             </li>
         </ul>
+        <p class="lastUpdate">Last Update: {{ lastUpdate() }}</p>
     </div>
 </template>
 
 <script setup>
 import { inject, onMounted, ref } from 'vue';
+
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 import Scores from '../database/Scores.json';
 import Works from '../database/Works.json';
@@ -45,7 +49,9 @@ const getScore = (id) => {
 }
 
 const lastUpdate = () => {
-    myScore.value = Scores.Scores
+    dayjs.extend(relativeTime)
+    const date = Scores.Scores.filter(s => s.username === profile.value.username)[0].lastUpdate
+    return dayjs(date).fromNow()
 }
 
 const myScore = ref({})
@@ -98,6 +104,12 @@ img {
 }
 
 a {
+    color: var(--light);
+}
+
+.lastUpdate {
+    margin-top: 1em;
+    text-align: right;
     color: var(--light);
 }
 </style>
