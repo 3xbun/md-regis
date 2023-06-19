@@ -21,17 +21,13 @@
 </template>
 
 <script setup>
-import { inject, computed, onMounted, ref } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 
 import Scores from '../database/Scores.json';
 import Works from '../database/Works.json';
 import Students from '../database/Students.json';
 
-import axios from 'axios';
-
 const profile = inject("profile");
-const baseURL = "http://localhost:3005/Scores/"
-const studentID = computed(() => Students.data.filter(std => std.username === profile.value.username)[0].id)
 
 const workDetail = (id) => {
     return {
@@ -48,7 +44,6 @@ const getScore = (id) => {
 const myScore = ref({})
 
 onMounted(async () => {
-    const request = await axios.get(baseURL + studentID.value)
     myScore.value = Scores.Scores.filter(s => s.username === profile.value.username)[0].works
 })
 </script>
