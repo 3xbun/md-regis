@@ -2,7 +2,7 @@
     <div id="scoringPage">
         <div class="container">
             <h1>Score</h1>
-            <input class="searchID" type="text" placeholder="Search Student ID" v-model="searchID">
+            <input class="searchID" type="text" placeholder="Enter Student ID" v-model="searchID">
             <div class="scores" v-if="Score.id">
                 <table>
                     <thead>
@@ -95,6 +95,7 @@ const saveScore = async (id) => {
     const payload = Score.value
     axios.patch(baseURL + id, payload)
     Scores.value = ScoresDB.Scores
+    Score.value = {}
 }
 
 onMounted(() => {
