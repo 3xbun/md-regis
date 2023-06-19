@@ -93,6 +93,7 @@ const editScore = async (id) => {
 
 const saveScore = async (id) => {
     const payload = Score.value
+    payload.lastUpdate = new Date().toISOString()
     axios.patch(baseURL + id, payload)
     Scores.value = ScoresDB.Scores
     Score.value = {}
