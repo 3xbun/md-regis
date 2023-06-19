@@ -2,15 +2,17 @@
     <div class="works">
         <h1>Works</h1>
         <ul>
-            <li class="work" v-for="work in WorksDB" :key="work.workID">
+            <li class="work" v-for="work in myScore" :key="work.workID">
                 <div class="top">
-                    <p>{{ work.title }}</p>
+                    <p>{{ workDetail(work.workID).title }}</p>
                     <p>
-                        <span id="score">{{ myScore['work' + work.workID] }}</span>/{{ work.score }}
+                        <span id="score">{{ myScore['work' + work.workID] }} {{ getScore(work.workID) }}</span>/{{
+                            workDetail(work.workID).totalScore
+                        }}
                     </p>
                 </div>
                 <div class="notion">
-                    <a :href="work.notion" target="_blank">View In Notion</a>
+                    <a :href="workDetail(work.workID).notion" target="_blank">View In Notion</a>
                     <img src="https://logos-download.com/wp-content/uploads/2019/06/Notion_App_Logo.png">
                 </div>
             </li>
@@ -19,14 +21,36 @@
 </template>
 
 <script setup>
-import { inject, computed } from 'vue';
+import { inject, computed, onMounted, ref } from 'vue';
 
-import WorksDB from '../database/Works';
-import ScoresDB from '../database/Scores';
+import Scores from '../database/Scores.json';
+import Works from '../database/Works.json';
+import Students from '../database/Students.json';
+
+import axios from 'axios';
 
 const profile = inject("profile");
+const baseURL = "http://localhost:3005/Scores/"
+const studentID = computed(() => Students.data.filter(std => std.username === profile.value.username)[0].id)
 
-const myScore = computed(() => ScoresDB.filter((score) => score.username === profile.value.username)[0])
+const workDetail = (id) => {
+    return {
+        title: Works.data.filter(w => w.workID == id)[0].title,
+        totalScore: Works.data.filter(w => w.workID == id)[0].score,
+        notion: Works.data.filter(w => w.workID == id)[0].notion
+    }
+}
+
+const getScore = (id) => {
+    return myScore.value.filter(w => w.workID == id)[0].score
+}
+
+const myScore = ref({})
+
+onMounted(async () => {
+    const request = await axios.get(baseURL + studentID.value)
+    myScore.value = Scores.Scores.filter(s => s.username === profile.value.username)[0].works
+})
 </script>
 
 <style scoped>
