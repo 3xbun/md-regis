@@ -1,17 +1,14 @@
 <template>
     <div id="scoringPage">
-        <div class="export click" @click="exportFile()">
-            <font-awesome-icon :icon="['fas', 'cloud-arrow-down']" />
-        </div>
         <div class="container">
             <h1>Score</h1>
-            <input type="text" placeholder="Search Student ID" v-model="searchID">
+            <input class="searchID" type="text" placeholder="Enter Student ID" v-model="searchID">
             <div class="scores" v-if="Score.id">
                 <table>
                     <thead>
                         <tr>
-                            <td>Student ID</td>
-                            <td class="left">Username</td>
+                            <td class="studentID">Student ID</td>
+                            <td class="left username">Username</td>
                             <td>Attendance</td>
                             <td>Work #1</td>
                             <td>Work #2</td>
@@ -24,10 +21,11 @@
                             <td>{{ Score.id }}</td>
                             <td class="left">{{ Score.username }}</td>
                             <td> {{ Score.atd }} </td>
-                            <td><input type="text" v-model="Score.work1"></td>
-                            <td><input type="text" v-model="Score.work2"></td>
-                            <td><input type="text" v-model="Score.work3"></td>
-                            <td class="click" @click="saveScore()"><font-awesome-icon :icon="['fas', 'floppy-disk']" /></td>
+                            <td><input type="text" v-model="Score.works[0].score"></td>
+                            <td><input type="text" v-model="Score.works[1].score"></td>
+                            <td><input type="text" v-model="Score.works[2].score"></td>
+                            <td class="click" @click="saveScore(Score.id)"><font-awesome-icon
+                                    :icon="['fas', 'floppy-disk']" /></td>
                         </tr>
                     </tbody>
                 </table>
@@ -36,8 +34,8 @@
                 <table>
                     <thead>
                         <tr>
-                            <td>Student ID</td>
-                            <td class="left">Username</td>
+                            <td class="studentID">Student ID</td>
+                            <td class="left username">Username</td>
                             <td>Attendance</td>
                             <td>Work #1</td>
                             <td>Work #2</td>
@@ -50,9 +48,9 @@
                             <td>{{ score.id }}</td>
                             <td class="left">{{ score.username }}</td>
                             <td>{{ score.atd }}</td>
-                            <td>{{ score.work1 }}</td>
-                            <td>{{ score.work2 }}</td>
-                            <td>{{ score.work3 }}</td>
+                            <td>{{ score.works[0].score }}</td>
+                            <td>{{ score.works[1].score }}</td>
+                            <td>{{ score.works[2].score }}</td>
                             <td class="click" @click="editScore(score.id)"><font-awesome-icon
                                     :icon="['fas', 'pen-to-square']" />
                             </td>
@@ -65,28 +63,18 @@
 </template>
 
 <script setup>
-import { Low } from 'lowdb'
-import { LocalStorage } from 'lowdb/browser'
+import axios from 'axios';
 
-import ScoresDB from '../database/Scores';
+import ScoresDB from '../database/Scores.json';
+
 import { ref } from '@vue/reactivity';
-import { onMounted } from 'vue';
 import { computed } from '@vue/reactivity';
-
-// Configure lowdb to write data to JSON file
-const adapter = new LocalStorage('score')
-// const defaultData = { posts: [] }
-const lowdb = new Low(adapter, {})
-
-const DB = []
-ScoresDB.forEach(element => {
-    DB.push(element)
-});
-
-localStorage.setItem('score', JSON.stringify(DB))
+import { onMounted } from 'vue';
 
 const Scores = ref({})
 const Score = ref({})
+
+const baseURL = "http://localhost:3005/Scores/"
 
 const searchID = ref('')
 
@@ -98,32 +86,22 @@ const filteredScores = computed(() => {
     }
 })
 
-const editScore = (id) => {
-    Score.value = Scores.value.filter(score => score.id === id)[0]
+const editScore = async (id) => {
+    const request = await axios.get(baseURL + id)
+    Score.value = request.data
 }
 
-const saveScore = async () => {
-    lowdb.data = Scores.value
-    const score = lowdb.data.find(e => e.id == Score.value.id)
-    console.log(score);
-    await lowdb.write()
+const saveScore = async (id) => {
+    const payload = Score.value
+    payload.lastUpdate = new Date().toISOString()
+    axios.patch(baseURL + id, payload)
+    Scores.value = ScoresDB.Scores
     Score.value = {}
 }
 
-
-const exportFile = () => {
-    const content = "const Scores = " + JSON.stringify(Scores.value) + "\nexport default Scores"
-    navigator.clipboard.writeText(content);
-}
-
-onMounted(async () => {
-    // Read data from JSON file, this will set db.data content
-    // If JSON file doesn't exist, defaultData is used instead
-    await lowdb.read()
-
-    Scores.value = lowdb.data
+onMounted(() => {
+    Scores.value = ScoresDB.Scores
 })
-
 
 </script>
 
@@ -183,18 +161,28 @@ tbody tr:hover {
     padding: .5em;
 }
 
-.export {
-    position: fixed;
-    bottom: 1em;
-    right: 1em;
-    font-size: 2em;
-    background-color: var(--accent);
-    width: 2.5em;
-    height: 2.5em;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--dark);
+.studentID {
+    width: 15%;
+}
+
+.username {
+    width: 10%;
+}
+
+.searchID {
+    width: 100%;
+    font-size: 1.5em;
+    font-family: inherit;
+    border: none;
+    border-radius: .5em;
+    padding: .5em;
+    text-align: center;
+    margin: 1em 0;
+    background-color: var(--light);
+    color: var(--white);
+}
+
+::placeholder {
+    color: inherit;
 }
 </style>

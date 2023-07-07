@@ -8,11 +8,11 @@
     <div class="rightSummary">
       <div class="exp">
         <p>Projected Grade</p>
-        <strong id="exp"></strong>
+        <strong id="exp">{{ grade }}</strong>
       </div>
       <div class="atd">
         <p>Attendance</p>
-        <p><strong id="atd"></strong>/{{ ScoresDB[0].atd }}</p>
+        <p><strong id="atd">{{ attendance() }}</strong>/{{ Scores.Scores[0].atd }}</p>
       </div>
     </div>
   </div>
@@ -20,18 +20,37 @@
 
 <script setup>
 import CircleProgress from "vue3-circle-progress";
-import { onMounted, computed, inject } from 'vue';
+import { onMounted, computed, inject, ref } from 'vue';
 import { CountUp } from "countup.js";
 
 import "vue3-circle-progress/dist/circle-progress.css";
 
-import ScoresDB from '../database/Scores';
+import Scores from '../database/Scores.json';
 
 const profile = inject("profile");
 
-const myScore = computed(() => ScoresDB.filter((score) => score.username === profile.value.username)[0])
-const totalScore = computed(() => parseInt(myScore.value["work1"]) + parseInt(myScore.value["work2"]) + parseInt(myScore.value["work3"]))
+const myScore = ref({})
 
+const attendance = () => {
+  const n = Scores.Scores.filter(s => s.username === profile.value.username)[0].atd
+  const a = new CountUp("atd", n, { duration: 5 })
+  a.start()
+}
+
+const totalScore = computed(() => {
+  let total = 0
+  if (myScore.value.length) {
+    total = myScore.value.reduce((acc, cur) => acc + parseInt(cur.score), 0)
+  } else {
+    total = 0
+  }
+
+  const percent = new CountUp("percent", total, { duration: 3 });
+  percent.start();
+
+  return total
+}
+)
 
 const grade = computed(() => {
   const score = totalScore.value
@@ -53,16 +72,12 @@ const grade = computed(() => {
     g = '1'
   }
 
-  return g
+  const exp = new CountUp("exp", parseFloat(g), { duration: 4, decimalPlaces: 2 });
+  exp.start();
 })
 
 onMounted(() => {
-  const percent = new CountUp("percent", totalScore.value, { duration: 3 });
-  const exp = new CountUp("exp", parseFloat(grade.value), { duration: 4, decimalPlaces: 2 });
-  const atd = new CountUp("atd", myScore.value.atd, { duration: 5 });
-  percent.start();
-  exp.start();
-  atd.start();
+  myScore.value = Scores.Scores.filter(s => s.username === profile.value.username)[0].works
 })
 </script>
 

@@ -21,7 +21,7 @@ const routes = [
         redirect: '/dashboard'
     },
     {
-        path: '/score',
+        path: '/scoring',
         name: 'score',
         component: Scores
     },
