@@ -1,7 +1,7 @@
 <template>
     <div id="scoringPage">
         <div class="container">
-            <h1>Score</h1>
+            <Title title="Scoring" />
             <input class="searchID" type="text" placeholder="Enter Student ID" v-model="searchID">
             <div class="scores" v-if="Score.id">
                 <table>
@@ -70,6 +70,8 @@ import ScoresDB from '../database/Scores.json';
 import { ref } from '@vue/reactivity';
 import { computed } from '@vue/reactivity';
 import { onMounted } from 'vue';
+
+import Title from "../components/Title.vue";
 
 const Scores = ref({})
 const Score = ref({})

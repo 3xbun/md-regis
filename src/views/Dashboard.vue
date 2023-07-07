@@ -1,6 +1,6 @@
 <template>
   <div id="dashboard">
-    <Title />
+    <Title title='Dashboard' />
     <ProfileImage />
 
     <div class="container">
