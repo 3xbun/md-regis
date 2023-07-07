@@ -12,7 +12,7 @@
       </div>
       <div class="atd">
         <p>Attendance</p>
-        <p><strong id="atd">{{ attendance() }}</strong>/{{ Scores.Scores[0].atd }}</p>
+        <Attendance />
       </div>
     </div>
   </div>
@@ -26,6 +26,7 @@ import { CountUp } from "countup.js";
 import "vue3-circle-progress/dist/circle-progress.css";
 
 import Scores from '../database/Scores.json';
+import Attendance from './Attendance.vue';
 
 const profile = inject("profile");
 
