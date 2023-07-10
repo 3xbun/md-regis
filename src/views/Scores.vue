@@ -76,7 +76,7 @@ import Title from "../components/Title.vue";
 const Scores = ref({})
 const Score = ref({})
 
-const baseURL = "http://localhost:3005/Scores/"
+const baseURL = "http://localhost:3001/Scores/"
 
 const searchID = ref('')
 

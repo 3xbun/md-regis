@@ -40,7 +40,7 @@ const processor = computed(() => {
   }
 })
 
-const baseURL = "http://localhost:3005/CheckIn"
+const baseURL = "http://localhost:3002/CheckIn"
 
 const saveCheckIn = async () => {
   console.log(processor.value);
