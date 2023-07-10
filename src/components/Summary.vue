@@ -13,9 +13,11 @@
       <div class="atd">
         <p>Attendance</p>
         <Attendance />
+        <p class="subtitle" @click="calMan()">{{ showCalendar.text }}</p>
       </div>
     </div>
   </div>
+  <Calendar v-if="showCalendar.status" />
 </template>
 
 <script setup>
@@ -27,10 +29,21 @@ import "vue3-circle-progress/dist/circle-progress.css";
 
 import Scores from '../database/Scores.json';
 import Attendance from './Attendance.vue';
+import Calendar from './Calendar.vue';
 
 const profile = inject("profile");
 
 const myScore = ref({})
+
+const showCalendar = ref({ text: 'Show Details', status: false })
+
+const calMan = () => {
+  if (showCalendar.value.status) {
+    showCalendar.value = { text: 'Show Details', status: false }
+  } else {
+    showCalendar.value = { text: 'Hide Details', status: true }
+  }
+}
 
 const attendance = () => {
   const n = Scores.Scores.filter(s => s.username === profile.value.username)[0].atd
@@ -125,6 +138,11 @@ onMounted(() => {
 .exp,
 .atd {
   background-color: var(--white);
+}
+
+.subtitle {
+  color: var(--light);
+  cursor: pointer;
 }
 
 .rightSummary {
