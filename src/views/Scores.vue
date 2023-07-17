@@ -89,6 +89,7 @@ const filteredScores = computed(() => {
 })
 
 const editScore = async (id) => {
+    searchID.value = id
     const request = await axios.get(baseURL + id)
     Score.value = request.data
 }
