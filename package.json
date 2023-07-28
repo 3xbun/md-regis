@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000",
-    "database": "concurrently \"json-server --watch ./src/database/Scores.json --port 3001\" \"json-server --watch ./src/database/CheckIn.json --port 3002\" ",
+    "database": "concurrently \"vite --port=3000\" \"json-server --watch ./src/database/Scores.json --port 3001\" \"json-server --watch ./src/database/CheckIn.json --port 3002\" ",
     "checkin": "json-server --watch ./src/database/CheckIn.json --port 3005",
     "build": "vite build",
     "preview": "vite preview"
