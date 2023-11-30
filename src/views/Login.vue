@@ -2,7 +2,8 @@
   <div id="loginPage">
     <div class="container">
       <Header />
-      <h1 class="subtitle">Welcome</h1>
+      <br>
+      <h1 class="subtitle">WELCOME</h1>
       <LoginForm />
     </div>
     <Footer />
