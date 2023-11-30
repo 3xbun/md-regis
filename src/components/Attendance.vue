@@ -18,10 +18,10 @@ const id = Students.data.filter(e => e.username === profile.value.username)[0].i
 
 const attendance = () => {
   let counter = 0
-  for (let index = 0; index < total; index++) {
-    const checkins = DB[index].checkins
-    counter += checkins.filter(e => e.id == id).length
-  }
+  // for (let index = 0; index < total; index++) {
+  //   const checkins = DB[index].checkins
+  //   counter += checkins.filter(e => e.id == id).length
+  // }
 
   const a = new CountUp("atd", counter)
   a.start()

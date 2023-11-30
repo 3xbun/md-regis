@@ -8,7 +8,7 @@
         </td>
       </tr>
       <tr>
-        <td><Strong>Checked</Strong></td>
+        <td><strong>Checked</strong></td>
         <td v-for="day in DB">
           <font-awesome-icon class="green" :icon="['fas', 'check']" v-if="isChecked(id, day.checkins)" />
           <font-awesome-icon class="red" :icon="['fas', 'xmark']" v-else />

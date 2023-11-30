@@ -13,7 +13,7 @@
       <div class="atd">
         <p>Attendance</p>
         <Attendance />
-        <p class="subtitle" @click="calMan()">{{ showCalendar.text }}</p>
+        <!-- <p class="subtitle" @click="calMan()">{{ showCalendar.text }}</p> -->
       </div>
     </div>
   </div>
@@ -22,18 +22,15 @@
 
 <script setup>
 import CircleProgress from "vue3-circle-progress";
-import { onMounted, computed, inject, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
 import { CountUp } from "countup.js";
 
 import "vue3-circle-progress/dist/circle-progress.css";
 
-import Scores from '../database/Scores.json';
 import Attendance from './Attendance.vue';
 import Calendar from './Calendar.vue';
 
 const profile = inject("profile");
-
-const myScore = ref({})
 
 const showCalendar = ref({ text: 'Show Details', status: false })
 
@@ -45,16 +42,11 @@ const calMan = () => {
   }
 }
 
-const attendance = () => {
-  const n = Scores.Scores.filter(s => s.username === profile.value.username)[0].atd
-  const a = new CountUp("atd", n, { duration: 5 })
-  a.start()
-}
-
 const totalScore = computed(() => {
+  const works = profile.value.works
   let total = 0
-  if (myScore.value.length) {
-    total = myScore.value.reduce((acc, cur) => acc + parseInt(cur.score), 0)
+  if (works) {
+    total = works.reduce((acc, cur) => acc + parseInt(cur.score), 0)
   } else {
     total = 0
   }
@@ -88,10 +80,6 @@ const grade = computed(() => {
 
   const exp = new CountUp("exp", parseFloat(g), { duration: 4, decimalPlaces: 2 });
   exp.start();
-})
-
-onMounted(() => {
-  myScore.value = Scores.Scores.filter(s => s.username === profile.value.username)[0].works
 })
 </script>
 

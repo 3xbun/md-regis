@@ -2,20 +2,20 @@
     "data": [
         {
             "workID": "1",
-            "title": "Be A Prompter",
-            "score": 10,
-            "notion": "https://2xbun.notion.site/1-Be-A-Prompter-b04f48a67fb54f8db29dbcefb43f0192"
+            "title": "Furniture Building",
+            "score": 30,
+            "notion": "https://2xbun.notion.site/Furniture-Building-de4944ef17f04c47adc1194f6afd689f"
         },
         {
             "workID": "2",
-            "title": "Data & Roleplay",
+            "title": "Room Creator",
             "score": 10,
-            "notion": "https://2xbun.notion.site/3-Data-Roleplay-b2bef249df214c2da18acdbf19711a57"
+            "notion": "https://2xbun.notion.site/Furniture-Building-de4944ef17f04c47adc1194f6afd689f"
         },
         {
             "workID": "3",
             "title": "Final Project",
-            "score": 80,
+            "score": 60,
             "notion": "https://2xbun.notion.site/Final-Project-d3a80d7277cf493b914cabeb09a7e7fa"
         }
     ]

@@ -2,17 +2,19 @@
     <div class="works">
         <h1>Works</h1>
         <ul>
-            <li class="work" v-for="work in myScore" :key="work.workID">
+            <li class="work" v-for="work in Works.data" :key="work.workID">
                 <div class="top">
-                    <p>{{ workDetail(work.workID).title }}</p>
+                    <p>{{ work.title }}</p>
                     <p>
-                        <span id="score">{{ myScore['work' + work.workID] }} {{ getScore(work.workID) }}</span>/{{
-                            workDetail(work.workID).totalScore
+                        <span id="score" v-if="profile.works">
+                            {{ getScore(work.workID) }}
+                        </span>/{{
+                            work.score
                         }}
                     </p>
                 </div>
                 <div class="notion">
-                    <a :href="workDetail(work.workID).notion" target="_blank">View In Notion</a>
+                    <a :href="work.notion" target="_blank">View In Notion</a>
                     <img src="https://logos-download.com/wp-content/uploads/2019/06/Notion_App_Logo.png">
                 </div>
             </li>
@@ -22,43 +24,23 @@
 </template>
 
 <script setup>
-import { inject, onMounted, ref } from 'vue';
+import { inject } from 'vue';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-import Scores from '../database/Scores.json';
 import Works from '../database/Works.json';
 
 const profile = inject("profile");
 
-const workDetail = (id) => {
-    try {
-        return {
-            title: Works.data.filter(w => w.workID == id)[0].title,
-            totalScore: Works.data.filter(w => w.workID == id)[0].score,
-            notion: Works.data.filter(w => w.workID == id)[0].notion
-        }
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 const getScore = (id) => {
-    return myScore.value.filter(w => w.workID == id)[0].score
+    return profile.value.works.filter(w => w.workID == id)[0].score
 }
 
 const lastUpdate = () => {
     dayjs.extend(relativeTime)
-    const date = Scores.Scores.filter(s => s.username === profile.value.username)[0].lastUpdate
-    return dayjs(date).fromNow()
+    return dayjs(profile.value.updatedAt).fromNow()
 }
-
-const myScore = ref({})
-
-onMounted(async () => {
-    myScore.value = Scores.Scores.filter(s => s.username === profile.value.username)[0].works
-})
 </script>
 
 <style scoped>

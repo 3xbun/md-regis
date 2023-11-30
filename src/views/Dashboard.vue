@@ -14,6 +14,8 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+
 import Title from "../components/Title.vue";
 import ProfileImage from "../components/ProfileImage.vue";
 import Name from "../components/Name.vue";
@@ -26,11 +28,16 @@ import { inject, onMounted } from "vue";
 import router from "../router";
 
 const state = inject("state");
+const profile = inject('profile')
 
 onMounted(() => {
   if (!state.value.isAuthenticated) {
     router.push("/login");
   }
+
+  axios.get("https://md-regis-api.onrender.com/users/" + profile.value.username).then(res => {
+    profile.value = { ...profile.value, ...res.data }
+  })
 });
 </script>
 
