@@ -1,6 +1,6 @@
 <template>
     <div class="profileImage">
-        <img :src="profileSrc" />
+        <img :src="profileSrc" class="drop-shadow" />
     </div>
 </template>
 
