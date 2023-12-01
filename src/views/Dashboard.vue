@@ -1,5 +1,5 @@
 <template>
-  <div id="dashboard">
+  <div id="dashboard" v-if="profile.checkIns">
     <Title title='Dashboard' />
     <ProfileImage />
 
@@ -26,6 +26,7 @@ import Footer from "../components/Footer.vue";
 
 import { inject, onMounted } from "vue";
 import router from "../router";
+import config from '../config';
 
 const state = inject("state");
 const profile = inject('profile')
@@ -35,7 +36,7 @@ onMounted(() => {
     router.push("/login");
   }
 
-  axios.get("https://md-regis-api.onrender.com/users/" + profile.value.username).then(res => {
+  axios.get(config.API_URL + profile.value.username).then(res => {
     profile.value = { ...profile.value, ...res.data }
   })
 });
