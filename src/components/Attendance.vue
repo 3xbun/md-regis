@@ -1,35 +1,28 @@
 <template>
-  <p>
+  <p v-if="profile.checkIns">
     <strong id="atd"></strong>/{{ total }}
   </p>
 </template>
 
 <script setup>
-import { inject, onMounted } from 'vue';
-import CheckIn from '../database/CheckIn.json';
-import Students from '../database/Students.json';
+import { inject, onMounted, ref } from 'vue';
 import { CountUp } from "countup.js";
-
-const DB = CheckIn.CheckIn
 
 const profile = inject("profile");
 
-const id = Students.data.filter(e => e.username === profile.value.username)[0].id
-
 const attendance = () => {
-  let counter = 0
-  // for (let index = 0; index < total; index++) {
-  //   const checkins = DB[index].checkins
-  //   counter += checkins.filter(e => e.id == id).length
-  // }
-
-  const a = new CountUp("atd", counter)
+  const a = new CountUp("atd", profile.value.checkIns.length)
   a.start()
 }
-const total = DB.length
 
-onMounted(() => {
-  attendance()
+const total = ref(0)
+
+onMounted(async () => {
+  total.value = await profile.value.checkIns.length
+
+  if (profile.value.checkIns) {
+    attendance()
+  }
 })
 </script>
 
