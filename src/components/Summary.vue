@@ -13,7 +13,7 @@
       <div class="atd">
         <p>Attendance</p>
         <Attendance />
-        <!-- <p class="subtitle" @click="calMan()">{{ showCalendar.text }}</p> -->
+        <p class="subtitle" @click="calMan()">{{ showCalendar.text }}</p>
       </div>
     </div>
   </div>
@@ -22,7 +22,7 @@
 
 <script setup>
 import CircleProgress from "vue3-circle-progress";
-import { computed, inject, ref } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
 import { CountUp } from "countup.js";
 
 import "vue3-circle-progress/dist/circle-progress.css";
@@ -51,9 +51,6 @@ const totalScore = computed(() => {
     total = 0
   }
 
-  const percent = new CountUp("percent", total, { duration: 3 });
-  percent.start();
-
   return total
 }
 )
@@ -78,7 +75,14 @@ const grade = computed(() => {
     g = '1'
   }
 
-  const exp = new CountUp("exp", parseFloat(g), { duration: 4, decimalPlaces: 2 });
+  return g
+})
+
+onMounted(() => {
+  const percent = new CountUp("percent", totalScore.value, { duration: 3 });
+  percent.start();
+
+  const exp = new CountUp("exp", parseFloat(grade.value), { duration: 4, decimalPlaces: 2 });
   exp.start();
 })
 </script>

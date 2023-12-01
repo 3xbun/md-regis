@@ -3,14 +3,14 @@
     <table>
       <tr>
         <td></td>
-        <td v-for="day in DB">
-          {{ formatDate(day.id) }}
+        <td v-for="day in checkedInDate">
+          {{ formatDate(day) }}
         </td>
       </tr>
       <tr>
         <td><strong>Checked</strong></td>
-        <td v-for="day in DB">
-          <font-awesome-icon class="green" :icon="['fas', 'check']" v-if="isChecked(id, day.checkins)" />
+        <td v-for="day in checkedInDate">
+          <font-awesome-icon class="green" :icon="['fas', 'check']" v-if="isChecked(day)" />
           <font-awesome-icon class="red" :icon="['fas', 'xmark']" v-else />
         </td>
       </tr>
@@ -19,32 +19,40 @@
 </template>
 
 <script setup>
-import CheckIn from '../database/CheckIn.json';
-import Students from '../database/Students.json';
-
 import dayjs from 'dayjs';
+import axios from 'axios';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { inject } from 'vue';
+import { inject, onMounted, ref } from 'vue';
 
-const DB = CheckIn.CheckIn.reverse();
+import config from '../config';
 
 const profile = inject("profile");
-const id = Students.data.filter(e => e.username === profile.value.username)[0].id
+const checkedInDate = ref([])
 
 const formatDate = (day) => {
   dayjs.extend(customParseFormat)
-  return dayjs(day, "DD-MM-YY").format('DD MMM')
+  return dayjs(day).format('DD MMM')
 }
 
-const isChecked = (id, checkins) => {
-  return checkins.filter(c => c.id == id).length
+const isChecked = (day) => {
+  if (profile.value.checkIns.filter(d => formatDate(d) == formatDate(day)).length > 0) {
+    return true
+  }
+  return false
 }
+
+onMounted(() => {
+  axios.get(config.API_URL + "bunnasorn.k").then(res => {
+    checkedInDate.value = res.data.checkIns
+  })
+})
 </script>
 
 <style scoped>
 strong {
   color: var(--primary);
 }
+
 
 td {
   text-align: center;
