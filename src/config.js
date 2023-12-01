@@ -4,8 +4,8 @@ const config = {
     SCOPES: [
         'user.read'
     ],
-    AUTHORITY: "https://login.microsoftonline.com/961328de-c445-4183-ae67-11b3fe8c183e"
-
+    AUTHORITY: "https://login.microsoftonline.com/961328de-c445-4183-ae67-11b3fe8c183e",
+    API_URL: "http://119.46.175.204/users/"
 }
 
 export default config
