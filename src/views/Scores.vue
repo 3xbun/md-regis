@@ -1,58 +1,42 @@
 <template>
     <div id="scoringPage">
+        <Loading v-if="isLoading" />
         <div class="container">
             <Title title="Scoring" />
             <input class="searchID" type="text" placeholder="Enter Student ID" v-model="searchID">
-            <div class="scores" v-if="Score.id">
-                <table>
-                    <thead>
-                        <tr>
-                            <td class="studentID">Student ID</td>
-                            <td class="left username">Username</td>
-                            <td>Attendance</td>
-                            <td>Work #1</td>
-                            <td>Work #2</td>
-                            <td>Work #3</td>
-                            <td></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{{ Score.id }}</td>
-                            <td class="left">{{ Score.username }}</td>
-                            <td> {{ Score.atd }} </td>
-                            <td><input type="text" v-model="Score.works[0].score"></td>
-                            <td><input type="text" v-model="Score.works[1].score"></td>
-                            <td><input type="text" v-model="Score.works[2].score"></td>
-                            <td class="click" @click="saveScore(Score.id)"><font-awesome-icon
-                                    :icon="['fas', 'floppy-disk']" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
             <div class="scores">
                 <table>
                     <thead>
                         <tr>
                             <td class="studentID">Student ID</td>
                             <td class="left username">Username</td>
-                            <td>Attendance</td>
                             <td>Work #1</td>
                             <td>Work #2</td>
                             <td>Work #3</td>
-                            <td></td>
+                            <td class="btn"></td>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr v-for="score in filteredScores">
-                            <td>{{ score.id }}</td>
-                            <td class="left">{{ score.username }}</td>
-                            <td>{{ score.atd }}</td>
-                            <td>{{ score.works[0].score }}</td>
-                            <td>{{ score.works[1].score }}</td>
-                            <td>{{ score.works[2].score }}</td>
-                            <td class="click" @click="editScore(score.id)"><font-awesome-icon
-                                    :icon="['fas', 'pen-to-square']" />
+                    <tbody v-if="isEditing">
+                        <tr v-for="user in filteredScores">
+                            <td>{{ user.stdID }}</td>
+                            <td class="left">{{ user.username }}</td>
+                            <td><input type="text" v-model="user.works[0].score"></td>
+                            <td><input type="text" v-model="user.works[1].score"></td>
+                            <td><input type="text" v-model="user.works[2].score"></td>
+                            <td class="click" @click="saveScore(user)">
+                                <font-awesome-icon :icon="['fas', 'floppy-disk']" />
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody v-else>
+                        <tr v-for="user in filteredScores">
+                            <td>{{ user.stdID }}</td>
+                            <td class="left">{{ user.username }}</td>
+                            <td>{{ user.works[0].score }}</td>
+                            <td>{{ user.works[1].score }}</td>
+                            <td>{{ user.works[2].score }}</td>
+                            <td class="click" @click="editScore(user.stdID)">
+                                <font-awesome-icon :icon="['fas', 'pen-to-square']" />
                             </td>
                         </tr>
                     </tbody>
@@ -65,24 +49,27 @@
 <script setup>
 import axios from 'axios';
 
-import ScoresDB from '../database/Scores.json';
-
 import { ref } from '@vue/reactivity';
 import { computed } from '@vue/reactivity';
-import { onMounted } from 'vue';
+import { inject, onMounted } from 'vue';
 
 import Title from "../components/Title.vue";
+import Loading from '../components/Loading.vue';
 
+import router from "../router";
+import config from '../config';
+
+const profile = inject('profile')
 const Scores = ref({})
-const Score = ref({})
-
-const baseURL = "http://localhost:3001/Scores/"
+const User = ref([])
+const isEditing = ref(false)
+const isLoading = ref(false)
 
 const searchID = ref('')
 
 const filteredScores = computed(() => {
     if (Scores.value.length) {
-        return Scores.value.filter(score => score.id.startsWith(searchID.value))
+        return Scores.value.filter(score => score.stdID.startsWith(searchID.value))
     } else {
         return Scores.value
     }
@@ -90,20 +77,31 @@ const filteredScores = computed(() => {
 
 const editScore = async (id) => {
     searchID.value = id
-    const request = await axios.get(baseURL + id)
-    Score.value = request.data
+    User.value = Scores.value.filter(user => user.stdID == searchID.value)
+    isEditing.value = true
 }
 
-const saveScore = async (id) => {
-    const payload = Score.value
-    payload.lastUpdate = new Date().toISOString()
-    axios.patch(baseURL + id, payload)
-    Scores.value = ScoresDB.Scores
-    Score.value = {}
+const saveScore = async (user) => {
+    const payload = user
+    isLoading.value = true
+    axios.patch(config.API_URL + user.username, payload).then(res => {
+        console.log(res.data)
+        isEditing.value = false
+        searchID.value = ''
+        isLoading.value = false
+        router.go(0)
+    }).catch(err => console.log(err))
 }
 
 onMounted(() => {
-    Scores.value = ScoresDB.Scores
+    if (profile.value.username !== 'bunnasorn.k') {
+        console.log("object");
+        window.location.replace("https://httpstatusdogs.com/img/403.jpg")
+    }
+
+    console.log(profile.value.username);
+
+    axios.get(config.API_URL).then(res => Scores.value = res.data)
 })
 
 </script>
@@ -133,7 +131,11 @@ thead tr {
 
 th,
 td {
-    padding: .5em;
+    padding: .5em 0;
+}
+
+td {
+    width: 15%;
 }
 
 .left {
@@ -150,10 +152,15 @@ tbody tr:hover {
 
 .click {
     cursor: pointer;
+    padding: .5em;
 }
 
+.btn {
+    width: 5%;
+}
+
+
 .scores input {
-    width: 100%;
     font-size: inherit;
     font-family: inherit;
     text-align: center;
@@ -161,15 +168,7 @@ tbody tr:hover {
     background-color: var(--light);
     color: var(--white);
     border-radius: 1em;
-    padding: .5em;
-}
-
-.studentID {
-    width: 15%;
-}
-
-.username {
-    width: 10%;
+    width: 100%;
 }
 
 .searchID {
@@ -187,5 +186,13 @@ tbody tr:hover {
 
 ::placeholder {
     color: inherit;
+}
+
+.studentID {
+    width: 15%;
+}
+
+.username {
+    width: 20%;
 }
 </style>
