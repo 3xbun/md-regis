@@ -3,20 +3,20 @@
         {
             "workID": "1",
             "title": "Furniture Building",
-            "score": 30,
+            "score": 60,
             "notion": "https://2xbun.notion.site/Furniture-Building-de4944ef17f04c47adc1194f6afd689f"
         },
         {
             "workID": "2",
             "title": "Room Creator",
-            "score": 10,
+            "score": 20,
             "notion": "https://2xbun.notion.site/Furniture-Building-de4944ef17f04c47adc1194f6afd689f"
         },
         {
             "workID": "3",
-            "title": "Final Project",
-            "score": 60,
-            "notion": "https://2xbun.notion.site/Final-Project-d3a80d7277cf493b914cabeb09a7e7fa"
+            "title": "IT Trivia",
+            "score": 20,
+            "notion": "https://2xbun.notion.site"
         }
     ]
 }
