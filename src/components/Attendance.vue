@@ -1,6 +1,7 @@
 <template>
   <p v-if="profile.checkIns">
-    <strong id="atd"></strong>/{{ total }}
+    <!-- <strong id="atd"></strong>/{{ total }} -->
+    <strong id="atd"></strong>
   </p>
 </template>
 
