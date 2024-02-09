@@ -3,7 +3,10 @@
         <Loading v-if="isLoading" />
         <div class="container">
             <Title title="Scoring" />
-            <input class="searchID" type="text" placeholder="Enter Student ID" v-model="searchID">
+            <div class="searchBar">
+                <input class="searchID" type="text" placeholder="Enter Student ID" v-model="searchID">
+                <p>&lt;50</p>
+            </div>
             <div class="scores">
                 <table>
                     <thead>
@@ -64,14 +67,19 @@ const Scores = ref({})
 const User = ref([])
 const isEditing = ref(false)
 const isLoading = ref(false)
+const showFailed = ref(true)
 
 const searchID = ref('')
 
 const filteredScores = computed(() => {
-    if (Scores.value.length) {
-        return Scores.value.filter(score => score.stdID.startsWith(searchID.value))
+    if (showFailed.value) {
+        console.log(showFailed.value);
     } else {
-        return Scores.value
+        if (Scores.value.length) {
+            return Scores.value.filter(score => score.stdID.startsWith(searchID.value))
+        } else {
+            return Scores.value
+        }
     }
 })
 
@@ -85,7 +93,6 @@ const saveScore = async (user) => {
     const payload = user
     isLoading.value = true
     axios.patch(config.API_URL + user.username, payload).then(res => {
-        console.log(res.data)
         isEditing.value = false
         searchID.value = ''
         isLoading.value = false
@@ -193,5 +200,19 @@ tbody tr:hover {
 
 .username {
     width: 20%;
+}
+
+.searchBar {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.searchBar p {
+    font-size: 1.5em;
+    background-color: #dc3545;
+    padding: .5em;
+    border-radius: .5em;
+    cursor: pointer;
 }
 </style>
