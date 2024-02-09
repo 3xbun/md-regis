@@ -5,7 +5,7 @@
             <Title title="Scoring" />
             <div class="searchBar">
                 <input class="searchID" type="text" placeholder="Enter Student ID" v-model="searchID">
-                <p>&lt;50</p>
+                <p @click="showFailed = !showFailed">&lt;50</p>
             </div>
             <div class="scores">
                 <table>
@@ -67,13 +67,17 @@ const Scores = ref({})
 const User = ref([])
 const isEditing = ref(false)
 const isLoading = ref(false)
-const showFailed = ref(true)
+const showFailed = ref(false)
 
 const searchID = ref('')
 
 const filteredScores = computed(() => {
     if (showFailed.value) {
-        console.log(showFailed.value);
+        if (Scores.value.length) {
+            return Scores.value.filter(score => score.works[0].score + score.works[1].score + score.works[2].score <= 60)
+        } else {
+            return Scores.value
+        }
     } else {
         if (Scores.value.length) {
             return Scores.value.filter(score => score.stdID.startsWith(searchID.value))
@@ -104,8 +108,6 @@ onMounted(() => {
     if (profile.value.username !== 'bunnasorn.k') {
         window.location.replace("https://httpstatusdogs.com/img/403.jpg")
     }
-
-    console.log(profile.value.username);
 
     axios.get(config.API_URL).then(res => Scores.value = res.data)
 })
