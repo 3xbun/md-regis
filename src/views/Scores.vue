@@ -5,7 +5,7 @@
             <Title title="Scoring" />
             <div class="searchBar">
                 <input class="searchID" type="text" placeholder="Enter Student ID" v-model="searchID">
-                <p @click="showFailed = !showFailed">&lt;50</p>
+                <p @click="showFailed = !showFailed">≤60</p>
             </div>
             <div class="scores">
                 <table>
@@ -74,7 +74,7 @@ const searchID = ref('')
 const filteredScores = computed(() => {
     if (showFailed.value) {
         if (Scores.value.length) {
-            return Scores.value.filter(score => score.works[0].score + score.works[1].score + score.works[2].score <= 60)
+            return Scores.value.filter(score => parseInt(score.works[0].score) + parseInt(score.works[1].score) + parseInt(score.works[2].score) <= 60)
         } else {
             return Scores.value
         }
