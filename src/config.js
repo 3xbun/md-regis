@@ -5,7 +5,7 @@ const config = {
         'user.read'
     ],
     AUTHORITY: "https://login.microsoftonline.com/961328de-c445-4183-ae67-11b3fe8c183e",
-    API_URL: "https://v8xkoeruor.ap.loclx.io/users/"
+    API_URL: "https://md-regis-api.serveo.net/users/"
 }
 
 export default config
