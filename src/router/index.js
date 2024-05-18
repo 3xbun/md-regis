@@ -3,6 +3,7 @@ import Dashboard from '../views/Dashboard.vue';
 import Login from '../views/Login.vue';
 import Scores from '../views/Scores.vue';
 import CheckIn from '../views/CheckIn.vue';
+import Register from '../views/Register.vue';
 
 
 const routes = [
@@ -30,6 +31,11 @@ const routes = [
         name: 'check-in',
         component: CheckIn
     },
+    {
+        path: '/register',
+        name: 'register',
+        component: Register
+    }
 ]
 
 const router = createRouter({

@@ -33,9 +33,7 @@ import Works from '../database/Works.json';
 
 const profile = inject("profile");
 
-const getScore = (id) => {
-    return profile.value.works.filter(w => w.workID == id)[0].score
-}
+const getScore = (id) => profile.value.works.length > 0 ? profile.value.works.filter(w => w.workID == id)[0].score : 0
 
 const lastUpdate = () => {
     dayjs.extend(relativeTime)
