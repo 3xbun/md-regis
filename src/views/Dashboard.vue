@@ -1,6 +1,6 @@
 <template>
-  <div class="externalError" v-if="externalError">
-    <img src="https://httpstatusdogs.com/img/500.jpg" alt="500">
+  <div class="externalError" v-if="externalError.isError">
+    <img :src="'https://httpstatusdogs.com/img/' + externalError.code + '.jpg'" :alt="externalError.code">
   </div>
   <div id="dashboard">
     <Title title='Dashboard' />
@@ -39,7 +39,10 @@ import config from '../config';
 
 const state = inject("state");
 const profile = inject('profile')
-const externalError = ref(false)
+const externalError = ref({
+  isError: false,
+  code: 200
+})
 
 onMounted(() => {
   if (!state.value.isAuthenticated) {
@@ -50,7 +53,11 @@ onMounted(() => {
     profile.value = { ...profile.value, ...res.data }
   }).catch(err => {
     console.error(err);
-    externalError.value = true
+    externalError.value = {
+      isError: true,
+      code: err.response.status
+    }
+    console.log(externalError.value);
   })
 });
 </script>
