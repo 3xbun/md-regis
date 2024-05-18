@@ -48,7 +48,7 @@ import config from '../config';
 const profile = inject("profile");
 const state = inject("state");
 
-const stdID = ref('00000')
+const stdID = ref('')
 const isDup = ref(false)
 const wrongpassword = ref(false)
 const password = ref("")
