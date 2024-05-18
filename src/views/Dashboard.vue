@@ -57,7 +57,6 @@ onMounted(() => {
       isError: true,
       code: err.response.status
     }
-    console.log(externalError.value);
   })
 });
 </script>
