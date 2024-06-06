@@ -23,9 +23,18 @@
                         <tr v-for="user in filteredScores">
                             <td>{{ user.stdID }}</td>
                             <td class="left">{{ user.username }}</td>
-                            <td><input v-if="user.works[0]" type="text" v-model="user.works[0].score"></td>
-                            <td><input v-if="user.works[1]" type="text" v-model="user.works[1].score"></td>
-                            <td><input v-if="user.works[2]" type="text" v-model="user.works[2].score"></td>
+                            <td>
+                                <input v-if="user.works[0]" type="text" v-model="user.works[0].score">
+                                <p v-else>0</p>
+                            </td>
+                            <td>
+                                <input v-if="user.works[1]" type="text" v-model="user.works[1].score">
+                                <p v-else>0</p>
+                            </td>
+                            <td>
+                                <input v-if="user.works[2]" type="text" v-model="user.works[2].score">
+                                <p v-else>0</p>
+                            </td>
                             <td class="click" @click="saveScore(user)">
                                 <font-awesome-icon :icon="['fas', 'floppy-disk']" />
                             </td>
@@ -35,9 +44,24 @@
                         <tr v-for="user in filteredScores">
                             <td>{{ user.stdID }}</td>
                             <td class="left">{{ user.username }}</td>
-                            <td v-if="user.works[0]">{{ user.works[0].score }}</td>
-                            <td v-if="user.works[1]">{{ user.works[1].score }}</td>
-                            <td v-if="user.works[2]">{{ user.works[2].score }}</td>
+                            <td>
+                                <p v-if="user.works[0]">
+                                    {{ user.works[0].score }}
+                                </p>
+                                <p v-else>0</p>
+                            </td>
+                            <td>
+                                <p v-if="user.works[1]">
+                                    {{ user.works[1].score }}
+                                </p>
+                                <p v-else>0</p>
+                            </td>
+                            <td>
+                                <p v-if="user.works[2]">
+                                    {{ user.works[2].score }}
+                                </p>
+                                <p v-else>0</p>
+                            </td>
                             <td class="click" @click="editScore(user.stdID)">
                                 <font-awesome-icon :icon="['fas', 'pen-to-square']" />
                             </td>
@@ -96,7 +120,7 @@ const editScore = async (id) => {
 const saveScore = async (user) => {
     const payload = user
     isLoading.value = true
-    axios.patch(config.API_URL + user.username, payload).then(res => {
+    axios.patch(config.API_URL + "users/" + user.username, payload).then(res => {
         isEditing.value = false
         searchID.value = ''
         isLoading.value = false
@@ -109,7 +133,7 @@ onMounted(() => {
         window.location.replace("https://httpstatusdogs.com/img/403.jpg")
     }
 
-    axios.get(config.API_URL).then(res => Scores.value = res.data)
+    axios.get(config.API_URL + 'users').then(res => Scores.value = res.data)
 })
 
 </script>
