@@ -49,7 +49,7 @@ onMounted(() => {
     router.push("/login");
   }
 
-  axios.get(config.API_URL + profile.value.username).then(res => {
+  axios.get(config.API_URL + "users/" + profile.value.username).then(res => {
     profile.value = { ...profile.value, ...res.data }
   }).catch(err => {
     console.error(err);
