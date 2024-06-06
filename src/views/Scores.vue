@@ -4,7 +4,8 @@
         <div class="container">
             <Title title="Scoring" />
             <div class="searchBar">
-                <input class="searchID" type="text" placeholder="Enter Student ID" v-model="searchID">
+                <input class="searchID" type="text" placeholder="Enter Student ID" v-model="searchID"
+                    @keyup.enter="editScore(searchID)">
                 <p @click="showFailed = !showFailed">≤60</p>
             </div>
             <div class="scores">
