@@ -2,19 +2,19 @@
     <div class="works">
         <h1>Works</h1>
         <ul>
-            <li class="work" v-for="work in Works.data" :key="work.workID">
+            <li class="work" v-for="work in Works" :key="work.workID">
                 <div class="top">
                     <p>{{ work.title }}</p>
                     <p>
                         <span id="score" v-if="profile.works">
                             {{ getScore(work.workID) }}
                         </span>/{{
-                            work.score
-                        }}
+                work.score
+            }}
                     </p>
                 </div>
                 <div class="notion">
-                    <a :href="work.notion" target="_blank">View In Notion</a>
+                    <a :href="work.ref" target="_blank">View In Notion</a>
                     <img src="https://logos-download.com/wp-content/uploads/2019/06/Notion_App_Logo.png">
                 </div>
             </li>
@@ -24,13 +24,15 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { inject, onMounted, ref } from 'vue';
+import axios from 'axios';
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-import Works from '../database/Works.json';
+import config from '../config';
 
+const Works = ref([])
 const profile = inject("profile");
 
 const getScore = (id) => profile.value.works.length > 0 ? profile.value.works.filter(w => w.workID == id)[0].score : 0
@@ -39,6 +41,19 @@ const lastUpdate = () => {
     dayjs.extend(relativeTime)
     return dayjs(profile.value.updatedAt).fromNow()
 }
+
+onMounted(() => {
+    axios.get(config.API_URL + "works").then(res => {
+        Works.value = res.data
+        // profile.value = { ...profile.value, ...res.data }
+    }).catch(err => {
+        console.error(err);
+        externalError.value = {
+            isError: true,
+            code: err.response.status
+        }
+    })
+})
 </script>
 
 <style scoped>
