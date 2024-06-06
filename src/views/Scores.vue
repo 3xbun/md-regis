@@ -24,15 +24,18 @@
                             <td>{{ user.stdID }}</td>
                             <td class="left">{{ user.username }}</td>
                             <td>
-                                <input v-if="user.works[0]" type="text" v-model="user.works[0].score">
+                                <input @keyup.enter="saveScore(user)" v-if="user.works[0]" type="text"
+                                    v-model="user.works[0].score">
                                 <p v-else>0</p>
                             </td>
                             <td>
-                                <input v-if="user.works[1]" type="text" v-model="user.works[1].score">
+                                <input @keyup.enter="saveScore(user)" v-if="user.works[1]" type="text"
+                                    v-model="user.works[1].score">
                                 <p v-else>0</p>
                             </td>
                             <td>
-                                <input v-if="user.works[2]" type="text" v-model="user.works[2].score">
+                                <input @keyup.enter="saveScore(user)" v-if="user.works[2]" type="text"
+                                    v-model="user.works[2].score">
                                 <p v-else>0</p>
                             </td>
                             <td class="click" @click="saveScore(user)">
@@ -114,7 +117,11 @@ const filteredScores = computed(() => {
 const editScore = async (id) => {
     searchID.value = id
     User.value = Scores.value.filter(user => user.stdID == searchID.value)
+    if (!User.value[0].works[0]) {
+        User.value[0].works[0] = 0
+    }
     isEditing.value = true
+    console.log(User.value[0].wo);
 }
 
 const saveScore = async (user) => {
