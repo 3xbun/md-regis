@@ -61,13 +61,13 @@ const register = () => {
       username: profile.value.username
     }
 
-    axios.get(config.API_URL + "id/" + stdID.value).then(res => {
+    axios.get(config.API_URL + "users/id/" + stdID.value).then(res => {
       if (res.status == 200) {
         isDup.value = true
       }
     }).catch(err => {
       if (err.response.status == 404) {
-        axios.post(config.API_URL, payload).then(res => {
+        axios.post(config.API_URL + "users", payload).then(res => {
           console.log(res);
           if (res.status == 200) {
             login()
