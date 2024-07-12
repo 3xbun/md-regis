@@ -19,6 +19,29 @@
                 </div>
             </li>
         </ul>
+        <br>
+        <h1>Project</h1>
+
+        <ul class="project">
+            <li class="work">
+                <p>1st Pitch</p>
+                <p>
+                    <span id="score">0</span>/20
+                </p>
+            </li>
+            <li class="work">
+                <p>2nd Pitch</p>
+                <p>
+                    <span id="score">0</span>/20
+                </p>
+            </li>
+            <li class="work">
+                <p>Report</p>
+                <p>
+                    <span id="score">0</span>/30
+                </p>
+            </li>
+        </ul>
         <p class="lastUpdate">Last Update: {{ lastUpdate() }}</p>
     </div>
 </template>
@@ -106,5 +129,17 @@ a {
     margin-top: 1em;
     text-align: right;
     color: var(--light);
+}
+
+.project {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: space-between;
+    gap: .5em !important;
+}
+
+.project li {
+    width: 100%;
+    text-align: center;
 }
 </style>
