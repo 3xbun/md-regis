@@ -82,8 +82,10 @@ onMounted(() => {
   const percent = new CountUp("percent", totalScore.value, { duration: 3 });
   percent.start();
 
-  const exp = new CountUp("exp", parseFloat(grade.value), { duration: 4, decimalPlaces: 2 });
-  exp.start();
+  if (grade.value > 0) {
+    const exp = new CountUp("exp", parseFloat(grade.value), { duration: 4, decimalPlaces: 1 });
+    exp.start();
+  }
 })
 </script>
 
