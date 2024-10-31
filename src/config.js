@@ -5,7 +5,7 @@ const config = {
         'user.read'
     ],
     AUTHORITY: "https://login.microsoftonline.com/961328de-c445-4183-ae67-11b3fe8c183e",
-    API_URL: "https://server.3xbun.com/md-regis-api/"
+    API_URL: "https://md-regis-api.3xbun.com/"
 }
 
 export default config
