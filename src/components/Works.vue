@@ -20,8 +20,7 @@
             </li>
         </ul>
         <br>
-        <h1>Project</h1>
-
+        
         <p class="lastUpdate">Last Update: {{ lastUpdate() }}</p>
     </div>
 </template>
