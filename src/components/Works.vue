@@ -9,8 +9,8 @@
                         <span id="score" v-if="profile.works">
                             {{ getScore(work.workID) }}
                         </span>/{{
-                work.score
-            }}
+                            work.score
+                        }}
                     </p>
                 </div>
                 <div class="notion">
@@ -20,7 +20,7 @@
             </li>
         </ul>
         <br>
-        
+
         <p class="lastUpdate">Last Update: {{ lastUpdate() }}</p>
     </div>
 </template>
@@ -37,7 +37,17 @@ import config from '../config';
 const Works = ref([])
 const profile = inject("profile");
 
-const getScore = (id) => profile.value.works.length > 0 ? profile.value.works.filter(w => w.workID == id)[0].score : 0
+const getScore = (id) => {
+    if (profile.value.works.length > 0) {
+        const work = profile.value.works.filter(w => w.workID == id)[0]
+
+        try {
+            return work.score
+        } catch (error) {
+            return 0
+        }
+    }
+}
 
 const lastUpdate = () => {
     dayjs.extend(relativeTime)
