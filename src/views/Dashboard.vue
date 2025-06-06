@@ -4,7 +4,7 @@
   </div>
   <div id="dashboard">
     <Title title='Dashboard' />
-    <div v-if="profile.checkIns">
+    <div v-if="profile">
       <ProfileImage />
 
       <div class="container">
@@ -49,15 +49,25 @@ onMounted(() => {
     router.push("/login");
   }
 
-  axios.get(config.API_URL + "users/" + profile.value.username).then(res => {
-    profile.value = { ...profile.value, ...res.data }
-  }).catch(err => {
+  const options = {
+    method: 'GET',
+    url: 'https://ndb.3xbun.com/api/v2/tables/m2r39rntqdpwuta/records',
+    params: { offset: '0', limit: '1', where: `where=(username,eq,${profile.value.username})`, viewId: 'vw8rysdenslqijcc' },
+    headers: {
+      'xc-token': '1GOWVXZS15GxMGLJNwMqPJHqFRQ_VXZ6CJJ9hehM'
+    }
+  };
+
+  axios.request(options).then(function (response) {
+    console.log(response.data.list[0]);
+    profile.value = response.data.list[0]
+  }).catch(function (error) {
     console.error(err);
     externalError.value = {
       isError: true,
       code: err.response.status
     }
-  })
+  });
 });
 </script>
 
