@@ -10,7 +10,7 @@
         <p>Projected Grade</p>
         <strong id="exp">{{ grade }}</strong>
       </div>
-      <div class="atd">
+      <!-- <div class="atd">
         <p>Attendance</p>
         <Attendance />
         <p class="subtitle" @click="calMan()">{{ showCalendar.text }}</p>
