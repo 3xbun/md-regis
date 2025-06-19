@@ -3,7 +3,7 @@
     <div class="ovr">
       <CircleProgress :viewport="true" :percent="totalScore" :transition="1500" :fill-color="'#3E64D6'"
         :empty-color="'#81BBDB'" />
-      <p><span id="percent"><count-up :end-val="totalScore" :duration="3"></count-up></span><span
+      <p class="totalScore"><span id="percent"><count-up :end-val="totalScore" :duration="3"></count-up></span><span
           class="total">/100</span></p>
     </div>
     <div class="rightSummary">
@@ -111,6 +111,12 @@ const grade = computed(() => {
 
 #percent {
   font-size: 3em;
+}
+
+.totalScore {
+  display: flex;
+  align-items: center;
+  margin-left: 1.5em;
 }
 
 .total {
