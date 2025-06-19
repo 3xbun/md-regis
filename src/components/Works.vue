@@ -4,17 +4,16 @@
         <ul>
             <li class="work" v-for="work in Works" :key="work.workID">
                 <div class="top">
-                    <p>{{ work.title }}</p>
+                    <p>{{ work.Title }}</p>
                     <p>
-                        <span id="score" v-if="profile.works">
-                            {{ getScore(work.workID) }}
-                        </span>/{{
-                            work.score
-                        }}
+                        <span id="score" v-if="profile['Work' + work.Id]">
+                            {{profile['Work' + work.Id]}}
+                        </span>
+                        <span v-else>-</span>/{{ work.Total }}
                     </p>
                 </div>
                 <div class="notion">
-                    <a :href="work.ref" target="_blank">View In Notion</a>
+                    <a :href="work.NotionLink" target="_blank">View In Notion</a>
                     <img src="https://logos-download.com/wp-content/uploads/2019/06/Notion_App_Logo.png">
                 </div>
             </li>
@@ -26,7 +25,7 @@
 </template>
 
 <script setup>
-import { inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref } from 'vue';
 import axios from 'axios';
 
 import dayjs from 'dayjs';
@@ -34,20 +33,8 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 
 import config from '../config';
 
-const Works = ref([])
+const Works = inject('Works')
 const profile = inject("profile");
-
-const getScore = (id) => {
-    if (profile.value.works.length > 0) {
-        const work = profile.value.works.filter(w => w.workID == id)[0]
-
-        try {
-            return work.score
-        } catch (error) {
-            return 0
-        }
-    }
-}
 
 const lastUpdate = () => {
     dayjs.extend(relativeTime)
@@ -55,16 +42,21 @@ const lastUpdate = () => {
 }
 
 onMounted(() => {
-    axios.get(config.API_URL + "works").then(res => {
-        Works.value = res.data
-        // profile.value = { ...profile.value, ...res.data }
-    }).catch(err => {
-        console.error(err);
-        externalError.value = {
-            isError: true,
-            code: err.response.status
+    const options = {
+        method: 'GET',
+        url: 'https://ndb.3xbun.com/api/v2/tables/mfghcigu5lvp23z/records',
+        params: { offset: '0', limit: '25', where: '', viewId: 'vwelqhrqp5nupjjg' },
+        headers: {
+            'xc-token': '1GOWVXZS15GxMGLJNwMqPJHqFRQ_VXZ6CJJ9hehM'
         }
-    })
+    };
+
+    axios
+        .request(options)
+        .then(res => {
+            Works.value = res.data.list
+        })
+        .catch(err => console.error(err));
 })
 </script>
 
