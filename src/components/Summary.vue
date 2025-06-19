@@ -14,7 +14,7 @@
         <p>Attendance</p>
         <Attendance />
         <p class="subtitle" @click="calMan()">{{ showCalendar.text }}</p>
-      </div>
+      </div> -->
     </div>
   </div>
   <Calendar v-if="showCalendar.status" />
@@ -31,6 +31,7 @@ import Attendance from './Attendance.vue';
 import Calendar from './Calendar.vue';
 
 const profile = inject("profile");
+const Works = inject('Works')
 
 const showCalendar = ref({ text: 'Show Details', status: false })
 
@@ -43,13 +44,10 @@ const calMan = () => {
 }
 
 const totalScore = computed(() => {
-  const works = profile.value.works
   let total = 0
-  if (works) {
-    total = works.reduce((acc, cur) => acc + parseInt(cur.score), 0)
-  } else {
-    total = 0
-  }
+  Works.value.forEach(work => {
+    total += profile.value['Work' + work.Id]
+  });
 
   return total
 }
@@ -79,10 +77,10 @@ const grade = computed(() => {
 })
 
 onMounted(() => {
-  const percent = new CountUp("percent", totalScore.value, { duration: 3 });
-  percent.start();
+  if (grade.value > 0 && totalScore.value > 0) {
+    const percent = new CountUp("percent", totalScore.value, { duration: 3 });
+    percent.start();
 
-  if (grade.value > 0) {
     const exp = new CountUp("exp", parseFloat(grade.value), { duration: 4, decimalPlaces: 1 });
     exp.start();
   }
