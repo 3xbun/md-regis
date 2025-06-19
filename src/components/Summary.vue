@@ -3,12 +3,15 @@
     <div class="ovr">
       <CircleProgress :viewport="true" :percent="totalScore" :transition="1500" :fill-color="'#3E64D6'"
         :empty-color="'#81BBDB'" />
-      <p><span id="percent"></span><span class="total">/100</span></p>
+      <p><span id="percent"><count-up :end-val="totalScore" :duration="3"></count-up></span><span
+          class="total">/100</span></p>
     </div>
     <div class="rightSummary">
       <div class="exp">
         <p>Projected Grade</p>
-        <strong id="exp">{{ grade }}</strong>
+        <strong id="exp">
+          <count-up :end-val="parseFloat(grade)" :duration="3" :decimalPlaces="1"></count-up>
+        </strong>
       </div>
       <!-- <div class="atd">
         <p>Attendance</p>
@@ -23,7 +26,7 @@
 <script setup>
 import CircleProgress from "vue3-circle-progress";
 import { computed, inject, onMounted, ref } from 'vue';
-import { CountUp } from "countup.js";
+import CountUp from 'vue-countup-v3'
 
 import "vue3-circle-progress/dist/circle-progress.css";
 
@@ -74,16 +77,6 @@ const grade = computed(() => {
   }
 
   return g
-})
-
-onMounted(() => {
-  if (grade.value > 0 && totalScore.value > 0) {
-    const percent = new CountUp("percent", totalScore.value, { duration: 3 });
-    percent.start();
-
-    const exp = new CountUp("exp", parseFloat(grade.value), { duration: 4, decimalPlaces: 1 });
-    exp.start();
-  }
 })
 </script>
 
