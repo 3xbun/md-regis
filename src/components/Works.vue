@@ -38,7 +38,7 @@ const profile = inject("profile");
 
 const lastUpdate = () => {
     dayjs.extend(relativeTime)
-    return dayjs(profile.value.updatedAt).fromNow()
+    return dayjs(profile.value.UpdatedAt).fromNow()
 }
 
 onMounted(() => {
