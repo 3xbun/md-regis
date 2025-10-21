@@ -1,30 +1,30 @@
 <template>
-  <p v-if="profile.checkIns">
+  <p>
     <!-- <strong id="atd"></strong>/{{ total }} -->
     <strong id="atd"></strong>
   </p>
 </template>
 
 <script setup>
-import { inject, onMounted, ref } from 'vue';
+import { inject, onMounted, ref } from "vue";
 import { CountUp } from "countup.js";
 
 const profile = inject("profile");
+const total = ref(0);
 
 const attendance = () => {
-  const a = new CountUp("atd", profile.value.checkIns.length)
-  a.start()
-}
+  const a = new CountUp("atd", total.value);
+  a.start();
+};
 
-const total = ref(0)
+onMounted(() => {
+  // total.value = 20;
+  total.value = profile.value.CheckIn.length;
 
-onMounted(async () => {
-  total.value = await profile.value.checkIns.length
-
-  if (profile.value.checkIns) {
-    attendance()
+  if (profile.value.CheckIn) {
+    attendance(total.value);
   }
-})
+});
 </script>
 
 <style scoped>

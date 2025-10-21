@@ -1,23 +1,35 @@
 <template>
   <div class="summary">
     <div class="ovr">
-      <CircleProgress :viewport="true" :percent="totalScore" :transition="1500" :fill-color="'#3E64D6'"
-        :empty-color="'#81BBDB'" />
-      <p class="totalScore"><span id="percent"><count-up :end-val="totalScore" :duration="3"></count-up></span><span
-          class="total">/100</span></p>
+      <CircleProgress
+        :viewport="true"
+        :percent="totalScore"
+        :transition="1500"
+        :fill-color="'#3E64D6'"
+        :empty-color="'#81BBDB'"
+      />
+      <p class="totalScore">
+        <span id="percent"
+          ><count-up :end-val="totalScore" :duration="3"></count-up></span
+        ><span class="total">/100</span>
+      </p>
     </div>
     <div class="rightSummary">
       <div class="exp">
         <p>Projected Grade</p>
         <strong id="exp">
-          <count-up :end-val="parseFloat(grade)" :duration="3" :decimalPlaces="1"></count-up>
+          <count-up
+            :end-val="parseFloat(grade)"
+            :duration="3"
+            :decimalPlaces="1"
+          ></count-up>
         </strong>
       </div>
-      <!-- <div class="atd">
+      <div class="atd">
         <p>Attendance</p>
         <Attendance />
         <p class="subtitle" @click="calMan()">{{ showCalendar.text }}</p>
-      </div> -->
+      </div>
     </div>
   </div>
   <Calendar v-if="showCalendar.status" />
@@ -25,59 +37,58 @@
 
 <script setup>
 import CircleProgress from "vue3-circle-progress";
-import { computed, inject, onMounted, ref } from 'vue';
-import CountUp from 'vue-countup-v3'
+import { computed, inject, onMounted, ref } from "vue";
+import CountUp from "vue-countup-v3";
 
 import "vue3-circle-progress/dist/circle-progress.css";
 
-import Attendance from './Attendance.vue';
-import Calendar from './Calendar.vue';
+import Attendance from "./Attendance.vue";
+import Calendar from "./Calendar.vue";
 
 const profile = inject("profile");
-const Works = inject('Works')
+const Works = inject("Works");
 
-const showCalendar = ref({ text: 'Show Details', status: false })
+const showCalendar = ref({ text: "Show Details", status: false });
 
 const calMan = () => {
   if (showCalendar.value.status) {
-    showCalendar.value = { text: 'Show Details', status: false }
+    showCalendar.value = { text: "Show Details", status: false };
   } else {
-    showCalendar.value = { text: 'Hide Details', status: true }
+    showCalendar.value = { text: "Hide Details", status: true };
   }
-}
+};
 
 const totalScore = computed(() => {
-  let total = 0
-  Works.value.forEach(work => {
-    total += profile.value['Work' + work.Id]
+  let total = 0;
+  Works.value.forEach((work) => {
+    total += profile.value["Work" + work.Id];
   });
 
-  return total
-}
-)
+  return total;
+});
 
 const grade = computed(() => {
-  const score = totalScore.value
-  let g = '0'
+  const score = totalScore.value;
+  let g = "0";
 
   if (score >= 80) {
-    g = '4'
+    g = "4";
   } else if (score >= 75) {
-    g = '3.5'
+    g = "3.5";
   } else if (score >= 70) {
-    g = '3'
+    g = "3";
   } else if (score >= 65) {
-    g = '2.5'
+    g = "2.5";
   } else if (score >= 60) {
-    g = '2'
+    g = "2";
   } else if (score >= 55) {
-    g = '1.5'
+    g = "1.5";
   } else if (score >= 50) {
-    g = '1'
+    g = "1";
   }
 
-  return g
-})
+  return g;
+});
 </script>
 
 <style scoped>

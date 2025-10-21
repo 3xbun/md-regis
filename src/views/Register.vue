@@ -2,32 +2,47 @@
   <div id="loginPage">
     <div class="container">
       <Header />
-      <br>
+      <br />
       <h1 class="subtitle">Register</h1>
       <table class="form">
         <tr>
-          <td>ID: </td>
+          <td>ID:</td>
           <td>
-            <strong><input @click="isDup = false" :class="{ error: isDup }" type="text" v-model="stdID"></strong>
+            <strong
+              ><input
+                @click="isDup = false"
+                :class="{ error: isDup }"
+                type="text"
+                v-model="stdID"
+            /></strong>
           </td>
         </tr>
         <tr>
-          <td>Name: </td>
-          <td><strong>{{ profile.name }}</strong></td>
-        </tr>
-        <tr>
-          <td>Username: </td>
-          <td><strong>{{ profile.username }}</strong></td>
-        </tr>
-        <tr>
-          <td>Secret: </td>
+          <td>Name:</td>
           <td>
-            <strong><input @click="wrongpassword = false" :class="{ error: wrongpassword }" type="text"
-                v-model="password"></strong>
+            <strong>{{ profile.name }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>Username:</td>
+          <td>
+            <strong>{{ profile.username }}</strong>
+          </td>
+        </tr>
+        <tr>
+          <td>Secret:</td>
+          <td>
+            <strong
+              ><input
+                @click="wrongpassword = false"
+                :class="{ error: wrongpassword }"
+                type="text"
+                v-model="password"
+            /></strong>
           </td>
         </tr>
       </table>
-      <div class="btn" @click="register()">Register </div>
+      <div class="btn" @click="register()">Register</div>
       <!-- <Register /> -->
     </div>
     <Footer />
@@ -39,49 +54,46 @@ import Footer from "../components/Footer.vue";
 import Header from "../components/Header.vue";
 // import Register from '../components/RegisterForm.vue';
 
-import { ref, inject, onMounted } from 'vue';
-import axios from 'axios';
+import { ref, inject, onMounted } from "vue";
+import axios from "axios";
 import { PublicClientApplication } from "@azure/msal-browser";
 
-import config from '../config';
+import config from "../config";
 
 const profile = inject("profile");
 const state = inject("state");
 
-const stdID = ref('')
-const isDup = ref(false)
-const wrongpassword = ref(false)
-const password = ref("")
+const stdID = ref("");
+const isDup = ref(false);
+const wrongpassword = ref(false);
+const password = ref("");
 import router from "../router";
 
 const register = () => {
-  if (password.value === 'serviam') {
+  if (password.value === "serviam") {
     const payload = {
-      stdID: stdID.value,
-      username: profile.value.username
-    }
+      StudentID: stdID.value,
+      Username: profile.value.username,
+      FullName: profile.value.name,
+    };
 
-    axios.get(config.API_URL + "users/id/" + stdID.value).then(res => {
-      if (res.status == 200) {
-        isDup.value = true
-      }
-    }).catch(err => {
-      if (err.response.status == 404) {
-        axios.post(config.API_URL + "users", payload).then(res => {
-          console.log(res);
-          if (res.status == 200) {
-            login()
-          }
-        })
-      }
-    })
+    const options = {
+      method: "POST",
+      url: "https://ndb.3xbun.com/api/v2/tables/msm4wm5c4mzxr7g/records",
+      headers: {
+        "xc-token": "wU0uyFeODMGzOqqkIUethPYhnZn_FqXXgifuiXWu",
+      },
+      data: payload,
+    };
+
+    axios
+      .request(options)
+      .then((res) => router.push("/"))
+      .catch((err) => console.error(err));
+  } else {
+    wrongpassword.value = true;
   }
-
-  else {
-    wrongpassword.value = true
-  }
-}
-
+};
 
 const Azure = new PublicClientApplication({
   auth: {
@@ -104,24 +116,24 @@ const handleResponse = (res) => {
     };
 
     state.value.isAuthenticated = true;
-    profile.value = account
+    profile.value = account;
 
     localStorage.setItem("profile", JSON.stringify(account));
     localStorage.setItem("isAuthenticated", true);
 
     router.push("/dashboard");
   }
-}
+};
 
 Azure.handleRedirectPromise().then(handleResponse);
 
 const login = () => {
-  Azure.loginRedirect(config.SCOPES)
+  Azure.loginRedirect(config.SCOPES);
 };
 
 onMounted(() => {
-  profile.value = JSON.parse(localStorage.getItem("profile"))
-})
+  profile.value = JSON.parse(localStorage.getItem("profile"));
+});
 </script>
 
 <style scoped>
@@ -141,7 +153,7 @@ td:first-child {
 
 td {
   text-align: left;
-  padding: .5em;
+  padding: 0.5em;
 }
 
 .btn {
@@ -151,9 +163,9 @@ td {
 input {
   font-family: inherit;
   font-size: inherit;
-  padding: .5em;
+  padding: 0.5em;
   border: none;
-  border-radius: .5em;
+  border-radius: 0.5em;
 }
 
 input.error {
