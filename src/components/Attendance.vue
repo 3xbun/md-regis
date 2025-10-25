@@ -18,7 +18,6 @@ const attendance = () => {
 };
 
 onMounted(() => {
-  // total.value = 20;
   total.value = profile.value.CheckIn.length;
 
   if (profile.value.CheckIn) {

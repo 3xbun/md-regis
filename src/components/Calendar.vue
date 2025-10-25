@@ -1,6 +1,10 @@
 <template>
   <div class="card">
-    <table>
+    <i class="fa-solid fa-square"></i>
+    <ul>
+      <li v-for="day in checkedInDate">{{ formatDate(day) }}</li>
+    </ul>
+    <!-- <table>
       <tr>
         <td></td>
         <td v-for="day in checkedInDate">
@@ -10,42 +14,40 @@
       <tr>
         <td><strong>Checked</strong></td>
         <td v-for="day in checkedInDate">
-          <font-awesome-icon class="green" :icon="['fas', 'check']" v-if="isChecked(day)" />
-          <font-awesome-icon class="red" :icon="['fas', 'xmark']" v-else />
+          <i class="fa-solid fa-check green" v-if="isChecked(day)"></i>
+          <i class="fa-solid fa-xmark red" v-else></i>
         </td>
       </tr>
-    </table>
+    </table> -->
   </div>
 </template>
 
 <script setup>
-import dayjs from 'dayjs';
-import axios from 'axios';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { inject, onMounted, ref } from 'vue';
-
-import config from '../config';
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { inject, onMounted, ref } from "vue";
 
 const profile = inject("profile");
-const checkedInDate = ref([])
+const checkedInDate = ref([]);
 
 const formatDate = (day) => {
-  dayjs.extend(customParseFormat)
-  return dayjs(day).format('DD MMM')
-}
+  dayjs.extend(customParseFormat);
+  return dayjs(day).format("DD MMM");
+};
 
 const isChecked = (day) => {
-  if (profile.value.checkIns.filter(d => formatDate(d) == formatDate(day)).length > 0) {
-    return true
+  if (
+    profile.value.CheckIn.filter((d) => formatDate(d) == formatDate(day))
+      .length > 0
+  ) {
+    return true;
   }
-  return false
-}
+  return false;
+};
 
 onMounted(() => {
-  axios.get(config.API_URL + "bunnasorn.k").then(res => {
-    checkedInDate.value = res.data.checkIns
-  })
-})
+  checkedInDate.value = profile.value.CheckIn;
+});
 </script>
 
 <style scoped>
@@ -53,12 +55,11 @@ strong {
   color: var(--primary);
 }
 
-
 td {
   text-align: center;
 }
 
-tr>td:first-child {
+tr > td:first-child {
   text-align: left;
   width: 0;
 }
