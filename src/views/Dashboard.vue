@@ -50,39 +50,39 @@ const externalError = ref({
 onMounted(() => {
   if (!state.value.isAuthenticated) {
     router.push("/login");
+  } else {
+    const options = {
+      method: "GET",
+      url: "https://ndb.3xbun.com/api/v2/tables/msm4wm5c4mzxr7g/records",
+      params: {
+        offset: "0",
+        limit: "25",
+        where: `where=(Username,eq,${profile.value.Username})`,
+        viewId: "vwynoiiw0yghyiq9",
+      },
+      headers: {
+        "xc-token": "wU0uyFeODMGzOqqkIUethPYhnZn_FqXXgifuiXWu",
+      },
+    };
+
+    axios
+      .request(options)
+      .then(function (response) {
+        if (response.data.list[0]) {
+          profile.value = response.data.list[0];
+          localStorage.setItem("profile", JSON.stringify(profile.value));
+        } else {
+          router.push("/register");
+        }
+      })
+      .catch(function (error) {
+        console.error(error);
+        externalError.value = {
+          isError: true,
+          code: error.response.status,
+        };
+      });
   }
-
-  const options = {
-    method: "GET",
-    url: "https://ndb.3xbun.com/api/v2/tables/msm4wm5c4mzxr7g/records",
-    params: {
-      offset: "0",
-      limit: "25",
-      where: `where=(Username,eq,${profile.value.Username})`,
-      viewId: "vwynoiiw0yghyiq9",
-    },
-    headers: {
-      "xc-token": "wU0uyFeODMGzOqqkIUethPYhnZn_FqXXgifuiXWu",
-    },
-  };
-
-  axios
-    .request(options)
-    .then(function (response) {
-      if (response.data.list[0]) {
-        profile.value = response.data.list[0];
-        localStorage.setItem("profile", JSON.stringify(profile.value));
-      } else {
-        router.push("/register");
-      }
-    })
-    .catch(function (error) {
-      console.error(error);
-      externalError.value = {
-        isError: true,
-        code: error.response.status,
-      };
-    });
 });
 </script>
 
