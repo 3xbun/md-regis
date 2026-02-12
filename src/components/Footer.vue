@@ -6,7 +6,7 @@
       School
     </p>
     <p>
-      Copyright &copy;2023
+      Copyright &copy;2026
       <a href="https://3xbun.github.io/" target="_black">Bunnasorn Kaewsiri</a>
     </p>
     <p class="version">{{ APP_VERSION }}</p>
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-const APP_VERSION = __APP_VERSION__
+const APP_VERSION = __APP_VERSION__;
 </script>
 
 <style scoped>
