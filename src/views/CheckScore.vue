@@ -8,12 +8,16 @@
           @click="
             stdID = '';
             err = false;
+            Scores = [];
           "
+          @keydown.enter="searchScore()"
           type="text"
           placeholder="กรอกเลขประจำตัว"
           v-model="stdID"
         />
-        <p class="btn" @click="searchScore()">ค้นหาคะแนน</p>
+        <p class="btn" @click="searchScore()">
+          <i class="fa-duotone fa-regular fa-magnifying-glass"></i>
+        </p>
       </div>
       <h3 class="error" v-if="err">ไม่พบข้อมูล</h3>
       <div class="display" v-if="Scores.length > 0 && stdID">
@@ -189,6 +193,10 @@ p.btn {
   border-radius: 0.5em;
   padding: 1em;
   margin-bottom: 1em;
+}
+
+.grade {
+  margin-bottom: 15vh;
 }
 
 td {
