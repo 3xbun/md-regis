@@ -91,13 +91,6 @@ onMounted(() => {
   padding-bottom: 10em;
 }
 
-.container {
-  width: 90vw;
-  margin: auto;
-  padding: 1em;
-  max-width: 600px;
-}
-
 .externalError {
   width: 100vw;
   height: 100vh;

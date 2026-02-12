@@ -1,41 +1,48 @@
-@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@300;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Prompt:wght@300;700&display=swap");
 
 :root {
-    --white: #F8F8FF;
-    --light: #81BBDB;
-    --primary: #3E64D6;
-    --dark: #2B3457;
-    --accent: #EEE8A9;
+  --white: #f8f8ff;
+  --light: #81bbdb;
+  --primary: #3e64d6;
+  --dark: #2b3457;
+  --accent: #eee8a9;
 }
 
 * {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 body {
-    font-family: 'Prompt', sans-serif;
-    background-color: var(--dark);
-    color: var(--white);
+  font-family: "Prompt", sans-serif;
+  background-color: var(--dark);
+  color: var(--white);
 }
 
 li {
-    list-style: none;
+  list-style: none;
 }
 
 .drop-shadow {
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 .btn {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .current-counter {
-    font-size: 3em;
+  font-size: 3em;
+}
+
+.container {
+  width: 90vw;
+  margin: auto;
+  padding: 1em;
+  max-width: 600px;
 }
