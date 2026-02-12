@@ -22,6 +22,14 @@
       <h3 class="error" v-if="err">ไม่พบข้อมูล</h3>
       <div class="display" v-if="Scores.length > 0 && stdID">
         <div class="information">
+          <img
+            class="profileImg"
+            :src="
+              'https://api.dicebear.com/9.x/thumbs/svg?seed=' +
+              Scores[0].studentID
+            "
+            alt=""
+          />
           <p>{{ Scores[0].studentID }}</p>
           <h3>{{ Scores[0].f_Name }} {{ Scores[0].l_Name }}</h3>
         </div>
@@ -216,5 +224,10 @@ td {
 .error {
   color: var(--light);
   text-align: center;
+}
+
+.profileImg {
+  width: 25%;
+  border-radius: 1em;
 }
 </style>
