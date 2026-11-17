@@ -88,6 +88,7 @@ const register = async () => {
     const [f_Name, ...rest] = (profile.value.name || "").split(" ");
     await createRecord(TABLES.allScore, {
       studentID: stdID.value,
+      Username: profile.value.username,
       f_Name: f_Name,
       l_Name: rest.join(" "),
       cube: 0,

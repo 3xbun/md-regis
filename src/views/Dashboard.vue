@@ -50,7 +50,7 @@ onMounted(() => {
     router.push("/login");
   } else {
     listRecords(TABLES.allScore, {
-      where: `(studentID,eq,${profile.value.Username})`,
+      where: `(Username,eq,${profile.value.Username || profile.value.username})`,
       pageSize: 25,
     })
       .then((records) => {
