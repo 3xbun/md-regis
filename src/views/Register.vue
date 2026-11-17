@@ -54,11 +54,12 @@ import Footer from "../components/Footer.vue";
 import Header from "../components/Header.vue";
 // import Register from '../components/RegisterForm.vue';
 
-import { ref, inject, onMounted } from "vue";
+import { inject, onMounted, ref } from "vue";
 import axios from "axios";
 import { PublicClientApplication } from "@azure/msal-browser";
-
+import router from "../router";
 import config from "../config";
+import { listRecords, createRecord, TABLES } from "../api/nocodb";
 
 const profile = inject("profile");
 const state = inject("state");
@@ -67,31 +68,36 @@ const stdID = ref("");
 const isDup = ref(false);
 const wrongpassword = ref(false);
 const password = ref("");
-import router from "../router";
 
-const register = () => {
-  if (password.value === "serviam") {
-    const payload = {
-      StudentID: stdID.value,
-      Username: profile.value.username,
-      FullName: profile.value.name,
-    };
-
-    const options = {
-      method: "POST",
-      url: "https://ndb.3xbun.com/api/v2/tables/msm4wm5c4mzxr7g/records",
-      headers: {
-        "xc-token": "wU0uyFeODMGzOqqkIUethPYhnZn_FqXXgifuiXWu",
-      },
-      data: payload,
-    };
-
-    axios
-      .request(options)
-      .then((res) => router.push("/"))
-      .catch((err) => console.error(err));
-  } else {
+const register = async () => {
+  if (password.value !== "serviam") {
     wrongpassword.value = true;
+    return;
+  }
+
+  try {
+    const existing = await listRecords(TABLES.allScore, {
+      where: `(studentID,eq,${stdID.value})`,
+      pageSize: 1,
+    });
+    if (existing.length > 0) {
+      isDup.value = true;
+      return;
+    }
+
+    const [f_Name, ...rest] = (profile.value.name || "").split(" ");
+    await createRecord(TABLES.allScore, {
+      studentID: stdID.value,
+      f_Name: f_Name,
+      l_Name: rest.join(" "),
+      cube: 0,
+      quiz: 0,
+      sketch: 0,
+      project: 0,
+    });
+    router.push("/");
+  } catch (err) {
+    console.error(err);
   }
 };
 

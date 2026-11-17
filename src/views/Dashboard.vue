@@ -25,8 +25,6 @@
 </template>
 
 <script setup>
-import axios from "axios";
-
 import Title from "../components/Title.vue";
 import ProfileImage from "../components/ProfileImage.vue";
 import Name from "../components/Name.vue";
@@ -51,25 +49,13 @@ onMounted(() => {
   if (!state.value.isAuthenticated) {
     router.push("/login");
   } else {
-    const options = {
-      method: "GET",
-      url: "https://ndb.3xbun.com/api/v2/tables/msm4wm5c4mzxr7g/records",
-      params: {
-        offset: "0",
-        limit: "25",
-        where: `where=(Username,eq,${profile.value.Username})`,
-        viewId: "vwynoiiw0yghyiq9",
-      },
-      headers: {
-        "xc-token": "wU0uyFeODMGzOqqkIUethPYhnZn_FqXXgifuiXWu",
-      },
-    };
-
-    axios
-      .request(options)
-      .then(function (response) {
-        if (response.data.list[0]) {
-          profile.value = response.data.list[0];
+    listRecords(TABLES.allScore, {
+      where: `(studentID,eq,${profile.value.Username})`,
+      pageSize: 25,
+    })
+      .then((records) => {
+        if (records[0]) {
+          profile.value = records[0];
           localStorage.setItem("profile", JSON.stringify(profile.value));
         } else {
           router.push("/register");
@@ -79,7 +65,7 @@ onMounted(() => {
         console.error(error);
         externalError.value = {
           isError: true,
-          code: error.response.status,
+          code: error.response ? error.response.status : 500,
         };
       });
   }

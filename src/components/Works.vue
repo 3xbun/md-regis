@@ -13,7 +13,7 @@
           </p>
         </div>
         <div class="notion">
-          <a :href="work.NotionLink" target="_blank">View In Notion</a>
+          <a :href="work.Link" target="_blank">View In Notion</a>
           <img
             src="https://logos-download.com/wp-content/uploads/2019/06/Notion_App_Logo.png"
           />
@@ -28,12 +28,11 @@
 
 <script setup>
 import { computed, inject, onMounted, ref } from "vue";
-import axios from "axios";
-
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 import config from "../config";
+import { listRecords, TABLES } from "../api/nocodb";
 
 const Works = inject("Works");
 const profile = inject("profile");
@@ -43,22 +42,12 @@ const lastUpdate = () => {
   return dayjs(profile.value.UpdatedAt).fromNow();
 };
 
-onMounted(() => {
-  const options = {
-    method: "GET",
-    url: "https://ndb.3xbun.com/api/v2/tables/mo7prb5q18ojbfu/records",
-    params: { offset: "0", limit: "25", where: "", viewId: "vwo5znxwp3qb9k5k" },
-    headers: {
-      "xc-token": "wU0uyFeODMGzOqqkIUethPYhnZn_FqXXgifuiXWu",
-    },
-  };
-
-  axios
-    .request(options)
-    .then((res) => {
-      Works.value = res.data.list;
-    })
-    .catch((err) => console.error(err));
+onMounted(async () => {
+  try {
+    Works.value = await listRecords(TABLES.works, { pageSize: 100 });
+  } catch (err) {
+    console.error(err);
+  }
 });
 </script>
 

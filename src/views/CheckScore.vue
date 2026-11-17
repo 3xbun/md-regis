@@ -91,13 +91,13 @@
 </template>
 
 <script setup>
-import axios from "axios";
 import { computed, ref } from "vue";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 
 import Title from "../components/Title.vue";
 import Footer from "../components/Footer.vue";
+import { listRecords, TABLES } from "../api/nocodb";
 
 const stdID = ref();
 const err = ref(false);
@@ -123,34 +123,23 @@ const grading = computed(() => {
   return { total: total, grade: 0 };
 });
 
-const searchScore = () => {
-  if (!stdID) {
+const searchScore = async () => {
+  if (!stdID.value) {
     return;
   }
 
-  const options = {
-    method: "GET",
-    url: "https://ndb.3xbun.com/api/v2/tables/mv3bon2e35ra87d/records",
-    params: {
-      offset: "0",
-      limit: "25",
-      where: `where=(studentID,eq,${stdID.value})`,
-      viewId: "vwl4xqu0vpq7ablz",
-    },
-    headers: {
-      "xc-token": "wU0uyFeODMGzOqqkIUethPYhnZn_FqXXgifuiXWu",
-    },
-  };
-
-  axios
-    .request(options)
-    .then((res) => {
-      if (res.data.list.length <= 0) {
-        err.value = true;
-      }
-      Scores.value = res.data.list;
-    })
-    .catch((err) => (err.value = true));
+  try {
+    const records = await listRecords(TABLES.allScore, {
+      where: `(studentID,eq,${stdID.value})`,
+      pageSize: 25,
+    });
+    if (records.length <= 0) {
+      err.value = true;
+    }
+    Scores.value = records;
+  } catch (e) {
+    err.value = true;
+  }
 };
 </script>
 
