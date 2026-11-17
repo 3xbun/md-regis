@@ -59,12 +59,11 @@ const calMan = () => {
 };
 
 const totalScore = computed(() => {
-  let total = 0;
-  Works.value.forEach((work) => {
-    total += profile.value["Work" + work.Id];
-  });
-
-  return total;
+  const p = profile.value || {};
+  return Works.value.reduce(
+    (total, _work, i) => total + (p["work" + (i + 1)] || 0),
+    0
+  );
 });
 
 const grade = computed(() => {

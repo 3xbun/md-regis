@@ -2,12 +2,12 @@
   <div class="works">
     <h1>Works</h1>
     <ul>
-      <li class="work" v-for="work in Works" :key="work.workID">
+      <li class="work" v-for="(work, i) in Works" :key="work.Id">
         <div class="top">
           <p>{{ work.Title }}</p>
           <p>
-            <span id="score" v-if="profile['Work' + work.Id]">
-              {{ profile["Work" + work.Id] }}
+            <span id="score" v-if="workScore(i) !== null && workScore(i) !== undefined">
+              {{ workScore(i) }}
             </span>
             <span v-else>-</span>/{{ work.Total }}
           </p>
@@ -36,6 +36,11 @@ import { listRecords, TABLES } from "../api/nocodb";
 
 const Works = inject("Works");
 const profile = inject("profile");
+
+// All_Score has work1..workN columns, mapped by position in the Works
+// table's grid order (row i = `work${i + 1}`), e.g. row 1 = "2D Sketching"
+// -> work1. Adding a work? Add the matching workN column in NocoDB.
+const workScore = (i) => profile.value?.["work" + (i + 1)];
 
 const lastUpdate = () => {
   dayjs.extend(relativeTime);
