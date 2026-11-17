@@ -15,11 +15,16 @@ const routes = [
   {
     path: "/dashboard",
     name: "dashboard",
-    component: CheckScore,
+    component: Dashboard,
   },
   {
     path: "/",
     redirect: "/dashboard",
+  },
+  {
+    path: "/check-score",
+    name: "check-score",
+    component: CheckScore,
   },
   {
     path: "/scoring",
