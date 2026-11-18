@@ -1,14 +1,25 @@
 <template>
   <div class="name">
-    <p>{{ profile.FullName }}</p>
-    <p class="username">@{{ profile.Username }}</p>
+    <p>{{ fullName }}</p>
+    <p class="username">@{{ userName }}</p>
   </div>
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { computed, inject } from "vue";
 
 const profile = inject("profile");
+
+const fullName = computed(() => {
+  const p = profile.value || {};
+  if (p.f_Name || p.l_Name) return `${p.f_Name || ""} ${p.l_Name || ""}`.trim();
+  return p.FullName || p.name || "";
+});
+
+const userName = computed(() => {
+  const p = profile.value || {};
+  return p.Username || p.username || p.studentID || "";
+});
 </script>
 
 <style scoped>
