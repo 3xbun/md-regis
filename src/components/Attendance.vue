@@ -18,9 +18,8 @@ const attendance = () => {
 };
 
 onMounted(() => {
-  total.value = profile.value.CheckIn.length;
-
-  if (profile.value.CheckIn) {
+  if (Array.isArray(profile.value?.CheckIn)) {
+    total.value = profile.value.CheckIn.length;
     attendance(total.value);
   }
 });

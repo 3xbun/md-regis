@@ -37,6 +37,7 @@ import Loading from "../components/Loading.vue";
 import { inject, onMounted, ref } from "vue";
 import router from "../router";
 import config from "../config";
+import { listRecords, TABLES } from "../api/nocodb";
 
 const state = inject("state");
 const profile = inject("profile");

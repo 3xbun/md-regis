@@ -36,17 +36,14 @@ const formatDate = (day) => {
 };
 
 const isChecked = (day) => {
-  if (
-    profile.value.CheckIn.filter((d) => formatDate(d) == formatDate(day))
-      .length > 0
-  ) {
-    return true;
-  }
-  return false;
+  const list = Array.isArray(profile.value?.CheckIn) ? profile.value.CheckIn : [];
+  return (
+    list.filter((d) => formatDate(d) == formatDate(day)).length > 0
+  );
 };
 
 onMounted(() => {
-  checkedInDate.value = profile.value.CheckIn;
+  checkedInDate.value = profile.value?.CheckIn || [];
 });
 </script>
 

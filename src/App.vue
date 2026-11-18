@@ -3,9 +3,9 @@
 </template>
 
 <script setup>
-import { onMounted, provide, ref } from "vue";
+import { provide, ref } from "vue";
 
-const profile = ref({});
+const profile = ref(JSON.parse(localStorage.getItem("profile") || "null"));
 const state = ref({
   isAuthenticated: localStorage.isAuthenticated || false,
 });
@@ -14,12 +14,6 @@ const Works = ref([])
 provide("profile", profile);
 provide("state", state);
 provide("Works", Works)
-
-onMounted(() => {
-  if (localStorage.getItem("profile")) {
-    profile.value = JSON.parse(localStorage.getItem("profile"))
-  }
-})
 </script>
 
 <style scoped></style>
