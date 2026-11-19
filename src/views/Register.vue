@@ -59,7 +59,7 @@ import axios from "axios";
 import { PublicClientApplication } from "@azure/msal-browser";
 import router from "../router";
 import config from "../config";
-import { listRecords, createRecord, TABLES } from "../api/nocodb";
+import { listRecords, createRecord, updateRecord, TABLES } from "../api/nocodb";
 
 const profile = inject("profile");
 const state = inject("state");
@@ -69,6 +69,8 @@ const isDup = ref(false);
 const wrongpassword = ref(false);
 const password = ref("");
 
+const alreadyLinked = ref(false);
+
 const register = async () => {
   if (password.value !== "serviam") {
     wrongpassword.value = true;
@@ -76,19 +78,42 @@ const register = async () => {
   }
 
   try {
+    const username = profile.value.username;
     const existing = await listRecords(TABLES.allScore, {
       where: `(studentID,eq,${stdID.value})`,
       pageSize: 1,
     });
+
     if (existing.length > 0) {
-      isDup.value = true;
+      const row = existing[0];
+      if (row.Username && row.Username !== username) {
+        // belongs to a different account — reject
+        isDup.value = true;
+        return;
+      }
+      if (!row.Username) {
+        // roster row pre-imported without a link — attach this AD account
+        await updateRecord(TABLES.allScore, row.Id, { Username: username });
+      }
+      router.push("/");
+      return;
+    }
+
+    // no roster row for this ID — check the account isn't already registered
+    const byUser = await listRecords(TABLES.allScore, {
+      where: `(Username,eq,${username})`,
+      pageSize: 1,
+    });
+    if (byUser.length > 0) {
+      alreadyLinked.value = true;
+      router.push("/");
       return;
     }
 
     const [f_Name, ...rest] = (profile.value.name || "").split(" ");
     await createRecord(TABLES.allScore, {
       studentID: stdID.value,
-      Username: profile.value.username,
+      Username: username,
       f_Name: f_Name,
       l_Name: rest.join(" "),
       cube: 0,

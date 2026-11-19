@@ -46,3 +46,20 @@ export async function createRecord(table, fields) {
   const rec = (res.data.records || [res.data])[0];
   return flatten(rec);
 }
+
+/**
+ * Update a record by numeric row id (NocoDB v3).
+ * This build wants PATCH on the collection with an array body:
+ *   [{ id, fields: {...} }]
+ * (PATCH/PUT on /records/{id} 404s on this server.)
+ * @param {string} table one of TABLES
+ * @param {number|string} id numeric record id
+ * @param {object} fields field map to update
+ */
+export async function updateRecord(table, id, fields) {
+  const res = await client.patch(`${BASE_URL}/${table}/records`, [
+    { id: Number(id), fields },
+  ]);
+  const rec = (res.data.records || [res.data])[0];
+  return flatten(rec);
+}
